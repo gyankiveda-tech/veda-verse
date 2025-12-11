@@ -61,6 +61,10 @@ camera.position.z = 5;
 const mouse = new THREE.Vector2();
 const targetRotation = { x: 0, y: 0 };
 
+// --- PARALLAX SCROLLING VARIABLE ---
+// Parallax Strength: 0.4 means the background moves 40% as fast as the foreground content.
+const PARALLAX_STRENGTH = 0.4; 
+
 
 // --- MOUSE TRACKING FUNCTION ---
 window.addEventListener('mousemove', (event) => {
@@ -70,6 +74,21 @@ window.addEventListener('mousemove', (event) => {
     targetRotation.y = mouse.x * 0.4; // Slightly reduced sensitivity
     targetRotation.x = mouse.y * 0.4; 
 });
+
+
+// --- NEW: PARALLAX SCROLLING LOGIC ---
+document.addEventListener('scroll', onScroll);
+
+function onScroll() {
+    // 1. Get the current scroll position
+    const scrollTop = window.scrollY;
+    
+    // 2. Calculate the camera's new Y position
+    // The camera moves up (positive Y) when scrolling down (positive scrollTop).
+    // The factor 0.01 converts large pixel values (scrollTop) into suitable units for the camera.
+    // PARALLAX_STRENGTH ensures slower movement for the background (depth illusion).
+    camera.position.y = scrollTop * PARALLAX_STRENGTH * 0.01; 
+}
 
 
 // --- Animation Loop (Updated for Mouse Follow and Dual Torus) ---
