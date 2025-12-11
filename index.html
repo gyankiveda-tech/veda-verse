@@ -3,56 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VEDA VERSE - GYAAN KI VEDA</title>
-    <link rel="stylesheet" href="style.css">
+    <title>VEDA VERSE - DIGITAL PORTAL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
     <style>
-        /* CSS to make 3D scene cover the whole screen */
+        /* BASE & THEME */
         body { margin: 0; overflow: hidden; background-color: #0d001a; }
         canvas { display: block; }
-        /* Overlay for your book links and character instructions */
+        
+        /* CONTENT OVERLAY - PROFESSIONAL PANEL LOOK */
         #content-overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none; /* Allows clicks to go through to 3D scene if needed */
-            color: #E0FFFF; /* Neon Cyan Text */
-            font-family: sans-serif;
+            pointer-events: none;
+            color: #E0FFFF; 
+            font-family: 'Orbitron', sans-serif; /* Applied new font */
             padding: 20px;
+            box-sizing: border-box;
+            text-shadow: 0 0 5px #00FFFF; /* NEON TEXT GLOW */
         }
+        
+        h1 { font-size: 2.5em; border-bottom: 2px solid #FF00FF; padding-bottom: 10px; }
+
+        /* BOOK SECTION STYLING */
         .book-section {
-            background: rgba(0, 0, 0, 0.6);
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border-left: 4px solid #FF00FF; /* Neon Magenta line */
-            pointer-events: auto; /* Make the links clickable */
-            max-width: 400px;
+            background: rgba(10, 0, 30, 0.8); /* Darker, slightly transparent background */
+            backdrop-filter: blur(5px); /* BLUR EFFECT! (Modern Vibe) */
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 25px;
+            border: 1px solid #00FFFF; /* Cyan border */
+            pointer-events: auto;
+            max-width: 450px;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4); /* Panel Glow */
         }
         .book-section a {
-            color: #E0FFFF;
+            color: #FF00FF; /* Magenta Action Color */
             text-decoration: none;
-            font-weight: bold;
+            font-weight: 700;
+            transition: color 0.3s;
+            display: inline-block; /* Make the purchase button look like a button */
+            padding: 10px 15px;
+            border: 1px solid #FF00FF;
+            background-color: rgba(255, 0, 255, 0.1);
+        }
+        .book-section a:hover {
+            color: #E0FFFF; /* Hover effect */
+            text-shadow: 0 0 10px #E0FFFF;
+            background-color: rgba(255, 0, 255, 0.3);
         }
     </style>
 </head>
 <body>
     <div id="content-overlay">
-        <h1>VEDA VERSE - GYAAN KI VEDA</h1>
-        <p>The Reality is promoted to a Multiverse. Choose your next dimension.</p>
+        <h1>[ VEDA VERSE // DIGITAL PORTAL ]</h1>
+        <p>:: WELCOME GYAANVARDHAN :: ACCESS LEVEL: MULTIVERSE REALITY INITIATED</p>
 
         <div class="book-section">
-            <h3>[ FREE COMIC ] GYAN KI VEDA - PART 1</h3>
-            <p>Welcome to the VEDA VERSE. Download your first comic for free.</p>
-            <a href="REPLACE_WITH_YOUR_PDF_LINK" target="_blank" download>⬇ DOWNLOAD FREE PDF ⬇</a>
+            <h3>[ FREE ACCESS ] GYAN KI VEDA - PART 1</h3>
+            <p>Download your first comic and begin your journey through the Multiverse Glitch.</p>
+            <a href="https://drive.google.com/uc?export=download&id=13ZkoRwrM_2mLTI_H1QJY3Wy5PraTJV2l" target="_blank" download>⬇ DOWNLOAD / INITIATE SEQUENCE ⬇</a>
         </div>
 
         <div class="book-section">
-            <h3>GYAN KI VEDA - PART 2 (Coming Soon)</h3>
-            <p>To access the next dimension, a small contribution is required. Purchase options will appear here!</p>
-            <a href="#">(Purchase Link will be here)</a>
+            <h3>[ PURCHASE REQUIRED ] GYAN KI VEDA - PART 2</h3>
+            <p>Unlock the next dimension. Price: ₹XX (Please update the Price in your HTML file)</p>
+            <a href="https://form.typeform.com/to/dleVNEMy?typeform-source=qrcode-button" target="_blank">:: UNLOCK PART 2 NOW ::</a>
         </div>
     </div>
     
