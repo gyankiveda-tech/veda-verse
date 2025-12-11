@@ -109,10 +109,11 @@
         .team-profile .role { color: #00FFFF; font-weight: bold; }
         
         /* BUTTON STYLING (General) */
-        .book-section a {
+        .book-section a, .review-form button {
             color: #FF00FF; font-weight: 700; transition: color 0.3s;
             display: block; text-align: center; padding: 12px 15px;
             border: 1px solid #FF00FF; background-color: rgba(255, 0, 255, 0.1);
+            font-family: 'Orbitron', sans-serif; /* Added for the button */
         }
         .book-section a:hover {
             color: #E0FFFF; text-shadow: 0 0 10px #E0FFFF; background-color: rgba(255, 0, 255, 0.3);
@@ -122,19 +123,7 @@
             cursor: default; pointer-events: none; 
         }
 
-        /* NEW: REVIEW FORM STYLING (PHP Integration) */
-        .review-form label {
-            display: block; margin-top: 15px; color: #E0FFFF; font-size: 0.95em;
-        }
-        .review-form input[type="text"], 
-        .review-form textarea {
-            width: 100%; padding: 10px; box-sizing: border-box; 
-            background: #00051a; border: 1px solid #FF00FF; color: #C0C0C0;
-            font-family: monospace; font-size: 0.9em;
-        }
-        .review-form textarea {
-            height: 120px; resize: vertical;
-        }
+        /* NEW: REVIEW FORM BUTTON STYLING (The only part we need to keep) */
         .review-form button {
             display: block; width: 100%; padding: 12px; margin-top: 20px;
             background: #FF00FF; color: #0d001a; border: none; cursor: pointer;
@@ -146,47 +135,9 @@
             background: #00FFFF; color: #0d001a; box-shadow: 0 0 10px rgba(0, 255, 255, 0.9);
         }
 
-        /* ANIMATED STAR RATING STYLING (CSS) */
-        .rating {
-            direction: rtl; /* Stars from right to left */
-            display: inline-block;
-            margin-top: 10px;
-            perspective: 500px; /* Better for 3D-like scale effect */
-        }
-        .rating input {
-            display: none;
-        }
-        .rating label {
-            color: #555555; /* Default star color */
-            font-size: 2em;
-            padding: 0 5px;
-            cursor: pointer;
-            
-            /* 1. ANIMATION: Smooth Color and Transform Transition */
-            transition: color 0.4s ease, transform 0.4s ease;
-            
-            display: inline-block; /* Override the 'display: block' above */
-        }
-        /* When a star is checked (selected) */
-        .rating input:checked ~ label {
-            color: #FFD700; /* Gold color for checked stars and those to its left */
-            text-shadow: 0 0 5px rgba(255, 215, 0, 0.8), 0 0 10px rgba(255, 215, 0, 0.5);
-        }
-
-        /* 2. ANIMATION: Scale up the selected star for confirmation */
-        .rating input:checked + label {
-            transform: scale(1.2) translateY(-2px);
-        }
-
-        /* Hover Effect: Star Glows and slightly scales up */
-        .rating label:hover,
-        .rating label:hover ~ label {
-            color: #FFD700;
-            text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
-            /* Subtle hover scale */
-            transform: scale(1.1); 
-        }
-    
+        /* The old rating and input CSS is now redundant but kept for cleanliness */
+        .review-form label, .review-form input[type="text"], .review-form textarea, .rating { display: none; }
+        
         /* PROFESSIONAL FOOTER */
         #site-footer {
             position: fixed; bottom: 0; left: 0; width: 100%;
@@ -257,30 +208,20 @@
 
             <div class="book-section">
                 <h3>[ USER LOGS ] SUBMIT ANOMALY REPORT & RATING</h3>
-                <p>Status: DATA RECEIVING. Transmit your analysis of the VEDA timeline below. All data will be archived in the central server core via PHP script.</p>
+                <p>Status: DATA RECEIVING. Transmit your analysis of the VEDA timeline. This will redirect you to the **Secured Typeform Data Link**.</p>
                 
-                <form class="review-form" action="review_submit.php" method="POST">
+                <form class="review-form" action="https://form.typeform.com/to/RqozMzFq" method="GET" target="_blank">
                     
-                    <label for="username">:: RESEARCHER NAME/CODE ::</label>
-                    <input type="text" id="username" name="username" required placeholder="Enter your name or codename">
-
-                    <label>:: TIMELINE RATING (1-5 STARS) ::</label>
-                    <div class="rating">
-                        <input type="radio" id="star5" name="rating" value="5" required /><label for="star5" title="5 Stars">&#9733;</label>
-                        <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="4 Stars">&#9733;</label>
-                        <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="3 Stars">&#9733;</label>
-                        <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="2 Stars">&#9733;</label>
-                        <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="1 Star">&#9733;</label>
-                    </div>
-                    
-                    <label for="review">:: ANOMALY REPORT (Detailed Review) ::</label>
-                    <textarea id="review" name="review" required placeholder="Enter your detailed analysis or feedback on the VEDA Part 1"></textarea>
+                    <label for="username" style="display: none;">:: RESEARCHER NAME/CODE ::</label>
+                    <input type="text" id="username" name="username" placeholder="Hidden Field">
+                    <div class="rating" style="display: none;"></div>
+                    <label for="review" style="display: none;">:: ANOMALY REPORT ::</label>
+                    <textarea id="review" name="review" placeholder="Hidden Field"></textarea>
                     
                     <button type="submit">TRANSMIT DATA TO SERVER CORE</button>
-                    <p style="text-align: center; font-size: 0.75em; color: #555;">(Note: Server connection via review_submit.php)</p>
+                    <p style="text-align: center; font-size: 0.75em; color: #FF00FF;">(NOTE: Redirection Protocol Active. Submitting will open Typeform in a new window.)</p>
                 </form>
             </div>
-
             <div class="book-section">
                 <h3>[ LOCKED ] GYAN KI VEDA - PART 2 // REALITY FRACTURE IMMINENT</h3>
                 <p>Status: PENDING. Next dimension access is currently restricted. Price: **PRICE DATA PENDING**</p>
