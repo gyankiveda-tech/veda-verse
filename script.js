@@ -1,41 +1,54 @@
-// --- Three.js Setup (No change) ---
+// --- Three.js Setup ---
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
-scene.background = new THREE.Color(0x0a001a); // Darker, more intense background
+scene.background = new THREE.Color(0x0a001a); // Deep Space Background
 
-// --- Cube Setup (More Aggressive Glitch Look) ---
-const geometry = new THREE.BoxGeometry(1.5, 1.5, 1.5); // Slightly larger cube
-const material = new THREE.MeshBasicMaterial({ 
+// --- GYAANVARDHAN AI DATA CORE ---
+
+// 1. Outer Ring (Holographic Shell - Neon Cyan)
+const torusGeometry1 = new THREE.TorusGeometry(1.5, 0.1, 10, 80); // Higher segments for smoother look
+const torusMaterial1 = new THREE.MeshBasicMaterial({ 
     color: 0x00FFFF, // Neon Cyan
-    wireframe: true, // Digital lines
+    wireframe: true,
     opacity: 0.8,
     transparent: true
 });
-const cube = new THREE.Mesh(geometry, material);
-scene.add(cube);
+const torus1 = new THREE.Mesh(torusGeometry1, torusMaterial1);
+scene.add(torus1);
 
-// --- Particle System (The Multiverse Stars/Noise) ---
+// 2. Inner Ring (Energy Field - Neon Magenta)
+const torusGeometry2 = new THREE.TorusGeometry(1.0, 0.05, 8, 40);
+const torusMaterial2 = new THREE.MeshBasicMaterial({ 
+    color: 0xFF00FF, // Neon Magenta
+    wireframe: true,
+    opacity: 0.7,
+    transparent: true
+});
+const torus2 = new THREE.Mesh(torusGeometry2, torusMaterial2);
+scene.add(torus2);
+
+
+// --- Particle System (High-Speed Data Flow) ---
 const particlesGeometry = new THREE.BufferGeometry();
-const particlesCount = 5000;
-const posArray = new Float32Array(particlesCount * 3); // 3 (x, y, z) coordinates per particle
+const particlesCount = 7000; // Increased particle count for richer background
+const posArray = new Float32Array(particlesCount * 3); 
 
 for(let i = 0; i < particlesCount * 3; i++) {
-    // Random spread of particles over a large area
-    posArray[i] = (Math.random() - 0.5) * 100; 
+    // Increased spread for a deeper space feeling
+    posArray[i] = (Math.random() - 0.5) * 150; 
 }
 
 particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
 
-// Particle material (small dots)
 const particlesMaterial = new THREE.PointsMaterial({
     size: 0.05,
-    color: 0xFF00FF, // Magenta for contrast
+    color: 0xFF00FF, // Matching the Magenta core and interface
     transparent: true,
-    opacity: 0.7
+    opacity: 0.6
 });
 
 const particleMesh = new THREE.Points(particlesGeometry, particlesMaterial);
@@ -44,23 +57,43 @@ scene.add(particleMesh);
 
 camera.position.z = 5;
 
-// --- Animation Loop ---
+// --- Mouse Tracking Variables ---
+const mouse = new THREE.Vector2();
+const targetRotation = { x: 0, y: 0 };
+
+
+// --- MOUSE TRACKING FUNCTION ---
+window.addEventListener('mousemove', (event) => {
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    targetRotation.y = mouse.x * 0.4; // Slightly reduced sensitivity
+    targetRotation.x = mouse.y * 0.4; 
+});
+
+
+// --- Animation Loop (Updated for Mouse Follow and Dual Torus) ---
 function animate() {
     requestAnimationFrame(animate);
 
-    // Dynamic Cube Rotation - faster and slightly erratic
-    cube.rotation.x += 0.01;
-    cube.rotation.y += 0.02;
-    cube.rotation.z += 0.005;
+    // Mouse Follow Rotation - Outer Torus (Follows Cursor)
+    torus1.rotation.y += (targetRotation.y - torus1.rotation.y) * 0.05;
+    torus1.rotation.x += (targetRotation.x - torus1.rotation.x) * 0.05;
+    torus1.rotation.z += 0.005; // Slightly faster spin
 
-    // Move particles to simulate depth and motion
-    particleMesh.rotation.y += 0.0005;
+    // Inner Torus (Rotates independently)
+    torus2.rotation.y += (-targetRotation.y - torus2.rotation.y) * 0.04; 
+    torus2.rotation.x += (-targetRotation.x - torus2.rotation.x) * 0.04;
+    torus2.rotation.z -= 0.015; // Faster counter-spin
+
+    // Particle movement
+    particleMesh.rotation.y += 0.0008; // Subtly increased background movement
     
     renderer.render(scene, camera);
 }
 animate();
 
-// Handle window resize (No Change)
+// Handle window resize 
 window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
