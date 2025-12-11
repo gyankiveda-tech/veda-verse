@@ -4,13 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VEDA VERSE - DIGITAL PORTAL</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     
     <style>
         /* BASE & THEME */
         body { margin: 0; background-color: #0d001a; } 
-        /* FIX: Canvas is fixed so it stays in the background during scroll */
         canvas { display: block; position: fixed; top: 0; left: 0; z-index: -1; } 
         
         /* CONTENT OVERLAY - PROFESSIONAL CONSOLE */
@@ -18,7 +17,7 @@
             position: relative; 
             width: 100%;
             pointer-events: none;
-            color: #C0C0C0; /* Professional Gray Text */
+            color: #C0C0C0; 
             font-family: 'Orbitron', sans-serif; 
             padding: 20px 20px 80px 20px; 
             box-sizing: border-box;
@@ -31,12 +30,23 @@
             max-width: 800px;
             margin: 0 auto; 
             padding: 30px;
-            background: rgba(10, 0, 30, 0.9); /* Slightly darker background for better contrast */
+            background: rgba(10, 0, 30, 0.9); 
             border: 3px double #00FFFF; 
-            box-shadow: 0 0 25px rgba(0, 255, 255, 0.6); /* Enhanced Outer Neon Glow */
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.6); 
             pointer-events: auto; 
             margin-top: 30px;
-            margin-bottom: 30px; /* Space above footer */
+            margin-bottom: 30px; 
+        }
+
+        /* NEW: VARDHAN'S COMICS STUDIO HEADER */
+        #studio-header {
+            color: #FF00FF;
+            font-size: 1.1em;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 5px;
+            text-shadow: 0 0 5px #FF00FF;
+            letter-spacing: 2px;
         }
 
         h1 { 
@@ -45,10 +55,23 @@
             border-bottom: 2px solid #FF00FF; 
             padding-bottom: 10px; 
             text-shadow: 0 0 10px #FF00FF; 
+            text-align: center;
         }
+        
+        /* GRAND STATEMENT STYLING */
+        #grand-statement {
+            color: #00FFFF;
+            font-size: 1.4em;
+            font-weight: 900; 
+            text-align: center;
+            margin-top: -5px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #00FFFF, 0 0 20px rgba(0, 255, 255, 0.5);
+        }
+
         p { font-size: 0.9em; line-height: 1.6; }
 
-        /* BOOK SECTION STYLING (Inside Console) */
+        /* BOOK SECTION STYLING */
         .book-section {
             background: rgba(20, 0, 40, 0.5); 
             padding: 20px;
@@ -63,50 +86,52 @@
             text-shadow: none;
         }
         .book-section img {
-            display: block; /* Center the image */
+            display: block; 
             margin: 15px auto; 
             max-width: 250px; 
             border: 2px solid #00FFFF; 
-            box-shadow: 0 0 8px rgba(255, 0, 255, 0.5); /* Image Glow */
+            box-shadow: 0 0 8px rgba(255, 0, 255, 0.5); 
             pointer-events: none;
         }
+        
+        /* TEAM PROFILE STYLING */
+        .team-profile {
+            display: flex; 
+            gap: 20px;
+            align-items: center;
+            padding: 15px;
+            margin-top: 10px;
+            border: 1px solid rgba(255, 0, 255, 0.3);
+            background: rgba(30, 0, 50, 0.5);
+        }
+        .team-profile .photo-container { flex-shrink: 0; }
+        .team-profile img {
+            width: 100px; height: 100px; border-radius: 50%; 
+            border: 3px solid #FF00FF; object-fit: cover; margin: 0;
+            box-shadow: 0 0 10px rgba(255, 0, 255, 0.8);
+        }
+        .team-profile .info-section { font-size: 0.9em; }
+        .team-profile .role { color: #00FFFF; font-weight: bold; }
+        
+        /* BUTTON STYLING */
         .book-section a {
-            color: #FF00FF; 
-            text-decoration: none;
-            font-weight: 700;
-            transition: color 0.3s;
-            display: block; /* Button full width */
-            text-align: center;
-            padding: 12px 15px;
-            border: 1px solid #FF00FF;
-            background-color: rgba(255, 0, 255, 0.1);
+            color: #FF00FF; font-weight: 700; transition: color 0.3s;
+            display: block; text-align: center; padding: 12px 15px;
+            border: 1px solid #FF00FF; background-color: rgba(255, 0, 255, 0.1);
         }
         .book-section .deactivated-link {
-            color: #555555; 
-            border: 1px solid #555555;
-            background-color: rgba(150, 150, 150, 0.1);
-            cursor: default; 
-            pointer-events: none; 
+            color: #555555; border: 1px solid #555555; background-color: rgba(150, 150, 150, 0.1);
+            cursor: default; pointer-events: none; 
         }
         .book-section a:hover {
-            color: #E0FFFF; 
-            text-shadow: 0 0 10px #E0FFFF;
-            background-color: rgba(255, 0, 255, 0.3);
+            color: #E0FFFF; text-shadow: 0 0 10px #E0FFFF; background-color: rgba(255, 0, 255, 0.3);
         }
 
         /* PROFESSIONAL FOOTER */
         #site-footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: #100030;
-            color: #808080;
-            text-align: center;
-            padding: 10px 0;
-            font-size: 0.8em;
-            border-top: 1px solid #00FFFF;
-            z-index: 10;
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background: #100030; color: #808080; text-align: center; 
+            padding: 10px 0; font-size: 0.8em; border-top: 1px solid #00FFFF; z-index: 10;
         }
     </style>
 </head>
@@ -114,15 +139,59 @@
     
     <div id="content-overlay">
         <div id="main-console">
-            <h1>[ VEDA VERSE // DIGITAL PORTAL ]</h1>
-            <p>:: WELCOME PROFESSOR :: ACCESS LEVEL: MULTIVERSE REALITY INITIATED (v0.1.1)</p>
+            
+            <div id="studio-header">VARDHAN'S COMICS STUDIO PRESENTS</div>
+            <h1>[ GYAN KI VEDA // DIGITAL PORTAL ]</h1>
+            <div id="grand-statement">INDIA'S LARGEST MULTIVERSE GLITCH COMIC SERIES</div>
+            
+            <p>:: WELCOME PROFESSOR :: ACCESS LEVEL: MULTIVERSE REALITY INITIATED (v0.1.5)</p>
+            
+            <div class="book-section">
+                <h3>[ ACCESS LOG ] PROJECT OVERVIEW</h3>
+                <p><strong>DATA TYPE: GRAPHIC NOVEL / CODE-FICTION COMIC SERIES</strong></p>
+                <p>
+                    SUMMARY: **GYAN KI VEDA** is not just fiction; it's a **TALE WHERE UNIVERSES COLLIDE**. It follows an ordinary Indian boy whose life is hijacked by destiny, promoting **IMAGINATION TO REALITY** through code and multiverse glitches. This portal grants access to the archived volumes of this high-level reality documentation.
+                </p>
+            </div>
+            
+            <div class="book-section">
+                <h3>[ CORE DATA ] RESEARCH TEAM PROFILE</h3>
+                
+                <div class="team-profile">
+                    <div class="photo-container"><img src="author-photo.jpg" alt="Gyan Vardhan Photo"></div>
+                    <div class="info-section">
+                        <div class="role">Lead Author & Concept Architect:</div>
+                        <p><strong>Gyan Vardhan (ज्ञान वर्धन)</strong></p>
+                        <p>Specialization: **Reality Glitch Analysis & Code Fiction Synthesis.** Primary source of VEDA timeline data and narrative structure. Responsible for initiating the Glitch Protocol.</p>
+                    </div>
+                </div>
+                
+                <div class="team-profile">
+                    <div class="photo-container"><img src="editor-jay.jpg" alt="Jai Vardhan Photo"></div>
+                    <div class="info-section">
+                        <div class="role">Data Integrity Editor:</div>
+                        <p><strong>Jai Vardhan (जय वर्धन)</strong></p>
+                        <p>Specialization: **Structural Consistency & Universal Law Enforcement.** Ensures that the VEDA narrative maintains logical flow and prevents timeline paradoxes within the comic data stream.</p>
+                    </div>
+                </div>
+
+                <div class="team-profile">
+                    <div class="photo-container"><img src="editor-harsh.jpg" alt="Harsh Vardhan Photo"></div>
+                    <div class="info-section">
+                        <div class="role">Narrative Flow Editor:</div>
+                        <p><strong>Harsh Vardhan (हर्ष वर्धन)</strong></p>
+                        <p>Specialization: **Chronological Sequencing & User Experience (UX).** Manages the reader's journey, making sure the complex multiverse story is delivered in an understandable and engaging format.</p>
+                    </div>
+                </div>
+
+            </div>
             
             <div class="book-section">
                 <h3>[ FREE ACCESS ] GYAN KI VEDA - PART 1 // CORE DATA DOWNLOAD</h3>
                 
                 <img src="poster-part1.jpg" alt="Gyan Ki Veda Part 1 Cover" style="width: 100%; max-width: 250px; border: 2px solid #00FFFF; margin-bottom: 15px; pointer-events: none;">
                 
-                <p>Status: ONLINE. Access Granted. Download the first unit of GYAN KI VEDA. Proceed with research protocol.</p>
+                <p>Status: ONLINE. Access Granted. Download the first unit of GYAN KI VEDA. Proceed with research protocol. **(Note: This Volume is currently available for Free Download.)**</p>
                 <a href="https://drive.google.com/uc?export=download&id=13ZkoRwrM_2mLTI_H1QJY3Wy5PraTJV2l" target="_blank" download>⬇ PROTOCOL INITIATE: DOWNLOAD ⬇</a>
             </div>
 
@@ -138,7 +207,7 @@
     </div>
     
     <div id="site-footer">
-        VEDA VERSE PORTAL v0.1.1 | © 2025 ALL RIGHTS RESERVED | ACCESS CODE: GYAANVARDHAN
+        VEDA VERSE PORTAL v0.1.5 | © 2025 ALL RIGHTS RESERVED | ACCESS CODE: GYAANVARDHAN
     </div>
     
     <script src="script.js"></script>
