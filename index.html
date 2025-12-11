@@ -9,71 +9,136 @@
     
     <style>
         /* BASE & THEME */
-        body { margin: 0; overflow: hidden; background-color: #0d001a; }
-        canvas { display: block; }
+        body { margin: 0; background-color: #0d001a; } 
+        /* FIX: Canvas is fixed so it stays in the background during scroll */
+        canvas { display: block; position: fixed; top: 0; left: 0; z-index: -1; } 
         
-        /* CONTENT OVERLAY - PROFESSIONAL PANEL LOOK */
+        /* CONTENT OVERLAY - PROFESSIONAL CONSOLE */
         #content-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
+            position: relative; 
             width: 100%;
-            height: 100%;
             pointer-events: none;
-            color: #E0FFFF; 
-            font-family: 'Orbitron', sans-serif; /* Applied new font */
-            padding: 20px;
+            color: #C0C0C0; /* Professional Gray Text */
+            font-family: 'Orbitron', sans-serif; 
+            padding: 20px 20px 80px 20px; 
             box-sizing: border-box;
-            text-shadow: 0 0 5px #00FFFF; /* NEON TEXT GLOW */
+            min-height: 100vh; 
+            z-index: 1; 
         }
         
-        h1 { font-size: 2.5em; border-bottom: 2px solid #FF00FF; padding-bottom: 10px; }
+        /* THE MAIN CONTAINER - THE PROFESSOR'S CONSOLE WINDOW */
+        #main-console {
+            max-width: 800px;
+            margin: 0 auto; 
+            padding: 30px;
+            background: rgba(10, 0, 30, 0.9); /* Slightly darker background for better contrast */
+            border: 3px double #00FFFF; 
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.6); /* Enhanced Outer Neon Glow */
+            pointer-events: auto; 
+            margin-top: 30px;
+            margin-bottom: 30px; /* Space above footer */
+        }
 
-        /* BOOK SECTION STYLING */
+        h1 { 
+            font-size: 2.2em; 
+            color: #E0FFFF; 
+            border-bottom: 2px solid #FF00FF; 
+            padding-bottom: 10px; 
+            text-shadow: 0 0 10px #FF00FF; 
+        }
+        p { font-size: 0.9em; line-height: 1.6; }
+
+        /* BOOK SECTION STYLING (Inside Console) */
         .book-section {
-            background: rgba(10, 0, 30, 0.8); /* Darker, slightly transparent background */
-            backdrop-filter: blur(5px); /* BLUR EFFECT! (Modern Vibe) */
+            background: rgba(20, 0, 40, 0.5); 
             padding: 20px;
             border-radius: 5px;
-            margin-bottom: 25px;
-            border: 1px solid #00FFFF; /* Cyan border */
-            pointer-events: auto;
-            max-width: 450px;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4); /* Panel Glow */
+            margin-bottom: 20px;
+            border: 1px solid #00FFFF; 
+        }
+        .book-section h3 {
+            color: #FFC0CB; 
+            border-bottom: 1px dashed #FFC0CB;
+            padding-bottom: 5px;
+            text-shadow: none;
+        }
+        .book-section img {
+            display: block; /* Center the image */
+            margin: 15px auto; 
+            max-width: 250px; 
+            border: 2px solid #00FFFF; 
+            box-shadow: 0 0 8px rgba(255, 0, 255, 0.5); /* Image Glow */
+            pointer-events: none;
         }
         .book-section a {
-            color: #FF00FF; /* Magenta Action Color */
+            color: #FF00FF; 
             text-decoration: none;
             font-weight: 700;
             transition: color 0.3s;
-            display: inline-block; /* Make the purchase button look like a button */
-            padding: 10px 15px;
+            display: block; /* Button full width */
+            text-align: center;
+            padding: 12px 15px;
             border: 1px solid #FF00FF;
             background-color: rgba(255, 0, 255, 0.1);
         }
+        .book-section .deactivated-link {
+            color: #555555; 
+            border: 1px solid #555555;
+            background-color: rgba(150, 150, 150, 0.1);
+            cursor: default; 
+            pointer-events: none; 
+        }
         .book-section a:hover {
-            color: #E0FFFF; /* Hover effect */
+            color: #E0FFFF; 
             text-shadow: 0 0 10px #E0FFFF;
             background-color: rgba(255, 0, 255, 0.3);
+        }
+
+        /* PROFESSIONAL FOOTER */
+        #site-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: #100030;
+            color: #808080;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 0.8em;
+            border-top: 1px solid #00FFFF;
+            z-index: 10;
         }
     </style>
 </head>
 <body>
+    
     <div id="content-overlay">
-        <h1>[ VEDA VERSE // DIGITAL PORTAL ]</h1>
-        <p>:: WELCOME GYAANVARDHAN :: ACCESS LEVEL: MULTIVERSE REALITY INITIATED</p>
+        <div id="main-console">
+            <h1>[ VEDA VERSE // DIGITAL PORTAL ]</h1>
+            <p>:: WELCOME PROFESSOR :: ACCESS LEVEL: MULTIVERSE REALITY INITIATED (v0.1.1)</p>
+            
+            <div class="book-section">
+                <h3>[ FREE ACCESS ] GYAN KI VEDA - PART 1 // CORE DATA DOWNLOAD</h3>
+                
+                <img src="poster-part1.jpg" alt="Gyan Ki Veda Part 1 Cover" style="width: 100%; max-width: 250px; border: 2px solid #00FFFF; margin-bottom: 15px; pointer-events: none;">
+                
+                <p>Status: ONLINE. Access Granted. Download the first unit of GYAN KI VEDA. Proceed with research protocol.</p>
+                <a href="https://drive.google.com/uc?export=download&id=13ZkoRwrM_2mLTI_H1QJY3Wy5PraTJV2l" target="_blank" download>⬇ PROTOCOL INITIATE: DOWNLOAD ⬇</a>
+            </div>
 
-        <div class="book-section">
-            <h3>[ FREE ACCESS ] GYAN KI VEDA - PART 1</h3>
-            <p>Download your first comic and begin your journey through the Multiverse Glitch.</p>
-            <a href="https://drive.google.com/uc?export=download&id=13ZkoRwrM_2mLTI_H1QJY3Wy5PraTJV2l" target="_blank" download>⬇ DOWNLOAD / INITIATE SEQUENCE ⬇</a>
+            <div class="book-section">
+                <h3>[ LOCKED ] GYAN KI VEDA - PART 2 // REALITY FRACTURE IMMINENT</h3>
+                <p>Status: PENDING. Next dimension access is currently restricted. Price: **PRICE DATA PENDING**</p>
+                
+                <img src="poster-part2-coming-soon.jpg" alt="Part 2 Coming Soon" style="width: 100%; max-width: 250px; border: 2px solid #FF00FF; margin-bottom: 15px; pointer-events: none;">
+                
+                <a href="#" class="deactivated-link">:: LAUNCH PROTOCOL BLOCKED ::</a>
+            </div>
         </div>
-
-        <div class="book-section">
-            <h3>[ PURCHASE REQUIRED ] GYAN KI VEDA - PART 2</h3>
-            <p>Unlock the next dimension. Price: ₹XX (Please update the Price in your HTML file)</p>
-            <a href="https://form.typeform.com/to/dleVNEMy?typeform-source=qrcode-button" target="_blank">:: UNLOCK PART 2 NOW ::</a>
-        </div>
+    </div>
+    
+    <div id="site-footer">
+        VEDA VERSE PORTAL v0.1.1 | © 2025 ALL RIGHTS RESERVED | ACCESS CODE: GYAANVARDHAN
     </div>
     
     <script src="script.js"></script>
