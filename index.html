@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VEDA VERSE - GYAAN KI VEDA</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        /* CSS to make 3D scene cover the whole screen */
+        body { margin: 0; overflow: hidden; background-color: #0d001a; }
+        canvas { display: block; }
+        /* Overlay for your book links and character instructions */
+        #content-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Allows clicks to go through to 3D scene if needed */
+            color: #E0FFFF; /* Neon Cyan Text */
+            font-family: sans-serif;
+            padding: 20px;
+        }
+        .book-section {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #FF00FF; /* Neon Magenta line */
+            pointer-events: auto; /* Make the links clickable */
+            max-width: 400px;
+        }
+        .book-section a {
+            color: #E0FFFF;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="content-overlay">
+        <h1>VEDA VERSE - GYAAN KI VEDA</h1>
+        <p>The Reality is promoted to a Multiverse. Choose your next dimension.</p>
+
+        <div class="book-section">
+            <h3>[ FREE COMIC ] GYAN KI VEDA - PART 1</h3>
+            <p>Welcome to the VEDA VERSE. Download your first comic for free.</p>
+            <a href="REPLACE_WITH_YOUR_PDF_LINK" target="_blank" download>⬇ DOWNLOAD FREE PDF ⬇</a>
+        </div>
+
+        <div class="book-section">
+            <h3>GYAN KI VEDA - PART 2 (Coming Soon)</h3>
+            <p>To access the next dimension, a small contribution is required. Purchase options will appear here!</p>
+            <a href="#">(Purchase Link will be here)</a>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
