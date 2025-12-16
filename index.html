@@ -123,6 +123,24 @@
             cursor: default; pointer-events: none; 
         }
 
+        /* NEW: FREE DOWNLOAD BUTTON STYLING (Part 1 Focus) */
+        .free-download-link {
+            background: #00FF00 !important; /* Neon Green */
+            color: #0d001a !important; /* Dark text */
+            text-shadow: none !important;
+            font-size: 1.2em !important; /* Bigger text */
+            padding: 18px 15px !important; /* More padding */
+            border: 2px solid #00FF00 !important; 
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.8) !important; /* Green neon glow */
+            font-weight: 900 !important;
+            transition: background 0.3s, box-shadow 0.3s;
+        }
+        .free-download-link:hover {
+            background: #00CC00 !important; /* Darker Green on hover */
+            color: #0d001a !important; 
+            box-shadow: 0 0 20px rgba(0, 255, 0, 1.0) !important; 
+        }
+
         /* NEW: REVIEW FORM BUTTON STYLING (The only part we need to keep) */
         .review-form button {
             display: block; width: 100%; padding: 12px; margin-top: 20px;
@@ -202,13 +220,16 @@
                 
                 <img src="poster-part1.jpg" alt="Gyan Ki Veda Part 1 Cover" style="width: 100%; max-width: 250px; border: 2px solid #00FFFF; margin-bottom: 15px; pointer-events: none;">
                 
-                <p>Status: ONLINE. Access Granted. Download the first unit of GYAN KI VEDA. Proceed with research protocol. **(Note: This Volume is currently available for Free Download.)**</p>
-                <a href="https://drive.google.com/uc?export=download&id=13ZkoRwrM_2mLTI_H1QJY3Wy5PraTJV2l" target="_blank" download>⬇ PROTOCOL INITIATE: DOWNLOAD ⬇</a>
+                <p>Status: ONLINE. Access Granted. Download the first unit of GYAN KI VEDA. Proceed with research protocol. **(Note: यह वॉल्यूम पूरी तरह से निःशुल्क उपलब्ध है)**</p>
+                
+                <a href="https://drive.google.com/uc?export=download&id=13ZkoRwrM_2mLTI_H1QJY3Wy5PraTJV2l" target="_blank" download class="free-download-link">
+                    ⚡ DOWNLOAD PART 1 FREE PDF (FREE ACCESS) ⚡
+                </a>
             </div>
 
             <div class="book-section">
-                <h3>[ USER LOGS ] SUBMIT ANOMALY REPORT & RATING</h3>
-                <p>Status: DATA RECEIVING. Transmit your analysis of the VEDA timeline. This will redirect you to the **Secured Typeform Data Link**.</p>
+                <h3>[ TIMELINE INPUT ] अपनी प्रतिक्रिया और रेटिंग दर्ज करें</h3>
+                <p>Status: ONLINE. इस कॉमिक को रेट करें और अपनी बहुमूल्य राय/समीक्षा दें। यह आपको सुरक्षित प्रतिक्रिया फॉर्म (Secured Feedback Form) पर रीडायरेक्ट करेगा।</p>
                 
                 <form class="review-form" action="https://form.typeform.com/to/RqozMzFq" method="GET" target="_blank">
                     
@@ -218,10 +239,11 @@
                     <label for="review" style="display: none;">:: ANOMALY REPORT ::</label>
                     <textarea id="review" name="review" placeholder="Hidden Field"></textarea>
                     
-                    <button type="submit">TRANSMIT DATA TO SERVER CORE</button>
-                    <p style="text-align: center; font-size: 0.75em; color: #FF00FF;">(NOTE: Redirection Protocol Active. Submitting will open Typeform in a new window.)</p>
+                    <button type="submit">⚡ अपनी प्रतिक्रिया भेजें (Submit Feedback) ⚡</button>
+                    <p style="text-align: center; font-size: 0.75em; color: #FF00FF;">(नोट: यह बटन एक नए टैब में सुरक्षित फीडबैक फॉर्म खोलेगा।)</p>
                 </form>
-            </div>
+                </div>
+
             <div class="book-section">
                 <h3>[ LOCKED ] GYAN KI VEDA - PART 2 // REALITY FRACTURE IMMINENT</h3>
                 <p>Status: PENDING. Next dimension access is currently restricted. Price: **PRICE DATA PENDING**</p>
