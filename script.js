@@ -1,148 +1,224 @@
-// --- Three.js Setup ---
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({ antialias: true });
+/**
+ * VEDA VERSE LUXURY INTERFACE ENGINE
+ * Version: 2.4.0
+ * Dependencies: GSAP, ScrollTrigger, Lenis
+ */
 
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
-scene.background = new THREE.Color(0x0a001a); // Deep Space Background
+// 1. INITIALIZE LENIS (SMOOTH SCROLL PHYSICS)
+const lenis = new Lenis({
+    duration: 1.5,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Physics-based easing
+    direction: 'vertical',
+    gestureDirection: 'vertical',
+    smoothWheel: true,
+    wheelMultiplier: 1,
+    touchMultiplier: 2,
+    infinite: false,
+})
 
-// **NEW: Enable Physically-Based Rendering for better lighting**
-renderer.toneMapping = THREE.ACESFilmicToneMapping; 
-renderer.toneMappingExposure = 0.5;
+function raf(time) {
+    lenis.raf(time)
+    requestAnimationFrame(raf)
+}
+requestAnimationFrame(raf)
 
-// --- GYAANVARDHAN AI DATA CORE ---
+// 2. CUSTOM CURSOR LOGIC (MAGNETIC FEEL)
+const cursor = document.getElementById('cursor');
+const cursorSVG = document.querySelector('.cursor-svg circle');
 
-// **UPDATED MATERIALS: Added Emissive property for a glowing effect**
-const torusMaterial1 = new THREE.MeshBasicMaterial({ 
-    color: 0x00FFFF, // Neon Cyan
-    wireframe: true,
-    opacity: 0.8,
-    transparent: true,
-    // NEW: Emissive property (gets affected by the dynamic light)
-    // emissive: 0x00FFFF, 
-    // emissiveIntensity: 0.5
+document.addEventListener('mousemove', (e) => {
+    // Follow mouse with GSAP for smoothness
+    gsap.to(cursor, {
+        x: e.clientX - 20,
+        y: e.clientY - 20,
+        duration: 0.5,
+        ease: "power3.out"
+    });
 });
-const torusGeometry1 = new THREE.TorusGeometry(1.5, 0.1, 10, 80); 
-const torus1 = new THREE.Mesh(torusGeometry1, torusMaterial1);
-scene.add(torus1);
 
-const torusMaterial2 = new THREE.MeshBasicMaterial({ 
-    color: 0xFF00FF, // Neon Magenta
-    wireframe: true,
-    opacity: 0.7,
-    transparent: true,
-    // NEW: Emissive property
-    // emissive: 0xFF00FF, 
-    // emissiveIntensity: 0.5
+// Cursor dashoffset animation on scroll
+window.addEventListener('scroll', () => {
+    const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 283;
+    gsap.to(cursorSVG, {
+        strokeDashoffset: 283 - scrollPercent,
+        duration: 0.3
+    });
 });
-const torusGeometry2 = new THREE.TorusGeometry(1.0, 0.05, 8, 40);
-const torus2 = new THREE.Mesh(torusGeometry2, torusMaterial2);
-scene.add(torus2);
 
-// --- LIGHTING SYSTEM (The source of dynamism) ---
+// 3. MASTER PRELOADER (DECODING ANIMATION)
+let progress = 0;
+const progressFill = document.querySelector('.progress-bar');
+const percentageText = document.querySelector('.percentage');
+const loadingMsg = document.getElementById('loading-msg');
 
-// 1. **Ambient Light:** Basic background illumination
-const ambientLight = new THREE.AmbientLight(0x404040, 5); // Brighter ambient light
-scene.add(ambientLight);
+const messages = [
+    "SYNCHRONIZING MULTIVERSE DATA...",
+    "STABILIZING REALITY FRACTURE...",
+    "EXTRACTING VEDIC LOGIC...",
+    "INITIALIZING INTERFACE..."
+];
 
-// 2. **Dynamic Point Light (Follows Cursor):** This is the "real object" feeling
-const dynamicLight = new THREE.PointLight(0x00FFFF, 1, 100, 2); // Cyan Light
-dynamicLight.position.set(0, 0, 5);
-scene.add(dynamicLight);
+const loadTimer = setInterval(() => {
+    progress += Math.floor(Math.random() * 5) + 1;
+    
+    if (progress >= 100) {
+        progress = 100;
+        clearInterval(loadTimer);
+        revealWebsite();
+    }
+    
+    progressFill.style.width = progress + "%";
+    percentageText.innerText = progress.toString().padStart(2, '0') + "%";
+    
+    // Change messages based on progress
+    if (progress > 25) loadingMsg.innerText = messages[1];
+    if (progress > 50) loadingMsg.innerText = messages[2];
+    if (progress > 75) loadingMsg.innerText = messages[3];
+    
+}, 100);
 
-// --- Particle System (High-Speed Data Flow) ---
-const particlesGeometry = new THREE.BufferGeometry();
-const particlesCount = 7000; 
-const posArray = new Float32Array(particlesCount * 3); 
-
-for(let i = 0; i < particlesCount * 3; i++) {
-    posArray[i] = (Math.random() - 0.5) * 150; 
+function revealWebsite() {
+    const tl = gsap.timeline();
+    
+    tl.to("#master-loader", {
+        y: "-100%",
+        duration: 1.5,
+        ease: "expo.inOut"
+    })
+    .from(".hero-main-title span", {
+        y: 200,
+        skewY: 10,
+        stagger: 0.2,
+        duration: 1.5,
+        ease: "expo.out"
+    }, "-=0.5")
+    .from(".v-nav", {
+        y: -100,
+        opacity: 0,
+        duration: 1
+    }, "-=1");
 }
 
-particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+// 4. GSAP SCROLLTRIGGER REVEALS (BUGATTI STYLE)
+gsap.registerPlugin(ScrollTrigger);
 
-const particlesMaterial = new THREE.PointsMaterial({
-    size: 0.05,
-    color: 0xFF00FF, // Magenta 
-    transparent: true,
-    opacity: 0.6
+// Hero Parallax effect
+gsap.to(".hero-bg-media", {
+    scrollTrigger: {
+        trigger: ".hero-section",
+        start: "top top",
+        scrub: true
+    },
+    y: 200,
+    scale: 1.2
 });
 
-const particleMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-scene.add(particleMesh);
-
-camera.position.z = 5;
-
-// --- Mouse Tracking Variables ---
-const mouse = new THREE.Vector2();
-const targetRotation = { x: 0, y: 0 };
-// NEW: Target position for the camera and light
-const targetCameraPos = { x: 0, y: 0, z: 5 };
-
-const PARALLAX_STRENGTH = 0.4; 
-
-// --- MOUSE TRACKING FUNCTION (Updated) ---
-window.addEventListener('mousemove', (event) => {
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-    // Rotation targets (as before)
-    targetRotation.y = mouse.x * 0.4; 
-    targetRotation.x = mouse.y * 0.4; 
-
-    // NEW: Camera and Light Position targets (Subtle Parallax on the object)
-    targetCameraPos.x = mouse.x * -0.2; // Move camera slightly opposite to cursor for depth
-    targetCameraPos.y = mouse.y * 0.2; // Move camera slightly towards cursor
+// Manifesto (Lore) Text Reveal
+gsap.from(".m-title", {
+    scrollTrigger: {
+        trigger: ".lore-v3",
+        start: "top 70%",
+    },
+    opacity: 0,
+    x: -100,
+    duration: 1.5,
+    ease: "expo.out"
 });
 
+gsap.from(".m-para", {
+    scrollTrigger: {
+        trigger: ".m-right",
+        start: "top 80%",
+    },
+    opacity: 0,
+    y: 50,
+    duration: 1.5,
+    stagger: 0.3,
+    ease: "power4.out"
+});
 
-// --- PARALLAX SCROLLING LOGIC ---
-document.addEventListener('scroll', onScroll);
+// Archive Items Hover & Reveal
+document.querySelectorAll('.a-item').forEach((item) => {
+    gsap.from(item, {
+        scrollTrigger: {
+            trigger: item,
+            start: "top 90%",
+        },
+        y: 100,
+        opacity: 0,
+        duration: 1.2,
+        ease: "power4.out"
+    });
+});
 
-function onScroll() {
-    const scrollTop = window.scrollY;
+// Team Member Magnetic Effect
+document.querySelectorAll('.t-member').forEach((member) => {
+    member.addEventListener('mouseenter', () => {
+        gsap.to(member.querySelector('.t-name'), {
+            x: 50,
+            color: "#00FFFF",
+            duration: 0.5,
+            ease: "power2.out"
+        });
+    });
     
-    // Y position is now calculated from scroll + mouse movement
-    const mouseMovementY = targetCameraPos.y; 
-    camera.position.y = (scrollTop * PARALLAX_STRENGTH * 0.01) + mouseMovementY; 
+    member.addEventListener('mouseleave', () => {
+        gsap.to(member.querySelector('.t-name'), {
+            x: 0,
+            color: "#FFFFFF",
+            duration: 0.5,
+            ease: "power2.out"
+        });
+    });
+});
+
+// 5. GLITCH EFFECT ON INTERACTION
+function triggerGlitch() {
+    const glitchOverlay = document.querySelector('.glitch-overlay');
+    gsap.to(glitchOverlay, {
+        opacity: 0.3,
+        duration: 0.1,
+        repeat: 3,
+        yoyo: true,
+        onComplete: () => {
+            gsap.to(glitchOverlay, { opacity: 0 });
+        }
+    });
 }
 
+// Trigger glitch randomly every 15-30 seconds for immersion
+setInterval(() => {
+    triggerGlitch();
+}, Math.random() * 15000 + 15000);
 
-// --- Animation Loop (Updated for Light Follow, Camera Shift, and Dual Torus) ---
-function animate() {
-    requestAnimationFrame(animate);
+console.log("VEDA VERSE ENGINE: ONLINE");
 
-    // 1. Smoothly Interpolate Camera Position (Creates the subtle 3D shift)
-    camera.position.x += (targetCameraPos.x - camera.position.x) * 0.1;
-    // Note: camera.position.y is updated in onScroll, but we apply the mouse effect here
-    camera.position.y += (targetCameraPos.y - (camera.position.y - (window.scrollY * PARALLAX_STRENGTH * 0.01))) * 0.1;
-    
-    // 2. Dynamic Light Position (Makes the core look lit by your cursor)
-    dynamicLight.position.x += (mouse.x * 3 - dynamicLight.position.x) * 0.15;
-    dynamicLight.position.y += (mouse.y * 3 - dynamicLight.position.y) * 0.15;
-    
-    // 3. Torus Rotations
-    // Outer Torus (Follows Cursor)
-    torus1.rotation.y += (targetRotation.y - torus1.rotation.y) * 0.05;
-    torus1.rotation.x += (targetRotation.x - torus1.rotation.x) * 0.05;
-    torus1.rotation.z += 0.005; 
+// --- ARTIST INTERACTION LOGIC ---
 
-    // Inner Torus (Counter-Rotates)
-    torus2.rotation.y += (-targetRotation.y - torus2.rotation.y) * 0.04; 
-    torus2.rotation.x += (-targetRotation.x - torus2.rotation.x) * 0.04;
-    torus2.rotation.z -= 0.015; 
+// 1. Audio Setup
+const clickSound = new Audio('click-sound.mp3'); // Sound file ka naam yahan likhein
+clickSound.volume = 0.2; // Volume control
 
-    // Particle movement
-    particleMesh.rotation.y += 0.0008; 
-    
-    renderer.render(scene, camera);
-}
-animate();
-
-// Handle window resize 
-window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+// 2. Click Animation & Redirect
+document.querySelectorAll('.t-member').forEach((member) => {
+    member.addEventListener('click', function() {
+        // Sound Play karein
+        clickSound.play();
+        
+        // Glitch Effect trigger karein (Humein pehle banaya tha)
+        triggerGlitch();
+        
+        // Ek chhota sa delay taaki transition feel ho
+        const targetPage = this.getAttribute('data-link'); // Hum HTML mein data-link add karenge
+        
+        gsap.to("main", {
+            opacity: 0,
+            y: -50,
+            duration: 0.8,
+            ease: "power4.inOut",
+            onComplete: () => {
+                window.location.href = targetPage;
+            }
+        });
+    });
 });
