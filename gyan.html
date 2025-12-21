@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARCHITECT 01 | GYAN VARDHAN</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Space+Grotesk:wght@300;500;700&family=Italiana&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <link rel="stylesheet" href="style.css"> 
+    <style>
+        .dossier-wrapper { padding: 0 5%; background: #000; }
+        .back-nav { position: fixed; top: 40px; left: 40px; z-index: 100; font-family: var(--font-h); font-size: 10px; letter-spacing: 5px; color: var(--accent); text-decoration: none; mix-blend-mode: difference; }
+        .hero-profile { height: 120vh; display: flex; flex-direction: column; justify-content: center; position: relative; }
+        .big-id { position: absolute; top: 20%; right: 0; font-size: 25vw; font-family: var(--font-h); color: rgba(255,255,255,0.03); pointer-events: none; line-height: 0.8; }
+        .profile-title { font-family: var(--font-h); font-size: 8vw; line-height: 1; }
+        .profile-sub { font-family: var(--font-alt); font-size: 2rem; color: var(--accent); margin-top: 20px; }
+        .thought-section { padding: 150px 0; border-top: 1px solid rgba(255,255,255,0.05); }
+        .thought-label { font-family: var(--font-h); font-size: 10px; color: var(--text-dim); margin-bottom: 30px; }
+        .thought-text { font-size: clamp(1.5rem, 4vw, 3.5rem); font-weight: 300; line-height: 1.2; max-width: 80%; }
+        .glitch-text-white { color: #fff; font-weight: 700; text-shadow: 2px 0 var(--accent); }
+        .image-collage { display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; margin: 100px 0; }
+        .img-box { background: #111; overflow: hidden; height: 600px; position: relative; border: 1px solid rgba(255,255,255,0.05); }
+        .img-box.large { grid-column: span 8; }
+        
+        /* MORSE CODE BOX - PART 2 ENCRYPTION */
+        .img-box.small { 
+            grid-column: span 4; height: 400px; margin-top: 200px;
+            display: flex; align-items: center; justify-content: center;
+            background: #050505; border: 1px solid var(--accent);
+        }
+        .morse-container { text-align: center; padding: 20px; }
+        .morse-signal { color: #fff; font-size: 1.5rem; letter-spacing: 10px; line-height: 2; margin: 20px 0; }
+        .scanline { position: absolute; width: 100%; height: 2px; background: var(--accent); opacity: 0.3; top: 0; animation: scan 4s linear infinite; }
+
+        .status-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 50px; margin-top: 100px; }
+        .status-item h4 { font-family: var(--font-h); font-size: 12px; color: var(--accent); margin-bottom: 15px; }
+        .status-item p { color: var(--text-dim); font-size: 0.9rem; letter-spacing: 1px; }
+        .footer-note { padding: 100px 0; text-align: center; font-family: var(--font-h); font-size: 0.6rem; opacity: 0.3; }
+
+        @keyframes scan { 0% { top: 0%; } 100% { top: 100%; } }
+    </style>
+</head>
+<body>
+
+    <div class="noise-layer"></div>
+    <a href="index.html" class="back-nav">[[ TERMINATE_SESSION ]]</a>
+
+    <main class="dossier-wrapper">
+        
+        <section class="hero-profile">
+            <div class="big-id">01</div>
+            <div class="v-label">DECODING ARCHITECT...</div>
+            <h1 class="profile-title">GYAN<br><span class="outline-text">VARDHAN</span></h1>
+            <p class="profile-sub">"The Weaver of Digital Myths"</p>
+        </section>
+
+        <section class="thought-section">
+            <div class="thought-label">LOG_ENTRY // PHILOSOPHY</div>
+            <h2 class="thought-text">
+                "Main nahi maanta ki code sirf logic hai. Mere liye, har ek <span class="glitch-text-white">syntax ek mantra hai</span>. Jab ancient Veda aur cyber-punk miltay hain, tab ek naya dimension paida hota hai."
+            </h2>
+            <div class="status-grid">
+                <div class="status-item">
+                    <h4>SPECIALIZATION</h4>
+                    <p>Conceptual Reality Mapping & Multiverse Stabilization Logic.</p>
+                </div>
+                <div class="status-item">
+                    <h4>CURRENT STATUS</h4>
+                    <p>Restless. Blue energy synchronization detected in subconscious.</p>
+                </div>
+                <div class="status-item">
+                    <h4>INTENT</h4>
+                    <p>To document the first breach in the Indian digital firewall.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="image-collage">
+            <div class="img-box large">
+                <img src="gyan-work-1.jpg" alt="Vedic Cybernetics Process" style="width:100%; height:100%; object-fit:cover; opacity:0.6;">
+                <div style="position:absolute; bottom:20px; left:20px; font-family:var(--font-h); font-size:10px; color:var(--accent);">
+                    FILE_REF: GYAN_RESTLESSNESS_P1
+                </div>
+            </div>
+
+            <div class="img-box small">
+                <div class="scanline"></div>
+                <div class="morse-container">
+                    <p style="font-family: var(--font-h); font-size: 9px; color: var(--accent); letter-spacing: 3px;">ENCRYPTED SIGNAL: PART 2</p>
+                    <div class="morse-signal">
+                        ..-. .-. .- -.-. - ..- .-. . <br>
+                        .. ... <br>
+                        -.-. --- -- .. -. --.
+                    </div>
+                    <p style="font-family: var(--font-b); font-size: 10px; color: var(--text-dim); font-style: italic;">
+                        "The link has awakened. The sky is cracking."
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="thought-section" style="border:none; background: rgba(0,255,255,0.02); padding: 100px;">
+            <div class="thought-label">PART 2 DATA LEAK // THE BLUE SPARK</div>
+            <h2 class="thought-text" style="font-family: var(--font-alt); font-style: italic;">
+                "Woh mysterious blue spark... meri aankhon ke parde par ab bhi chhap gaya hai. Yeh sirf koi glitch nahi tha, yeh <span style="color:var(--accent)">Veda ka dragon</span> hai jo uth raha hai."
+            </h2>
+        </section>
+
+        <section class="thought-section">
+            <div class="thought-label">SYSTEM_STATS // REALITY_REPORT</div>
+            <div class="status-grid">
+                <div class="status-item">
+                    <h4>ENERGY TYPE</h4>
+                    <p>Faint Blue Electric Pulse (0.5s duration)</p>
+                </div>
+                <div class="status-item">
+                    <h4>SYMBOL DETECTED</h4>
+                    <p>Circuit + Sanskrit Hybrid Glyph (Unstable)</p>
+                </div>
+                <div class="status-item">
+                    <h4>DIMENSIONAL FRACTURE</h4>
+                    <p>Sky texture breakage confirmed by Architect 01.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer-note">
+            END OF DATA STREAM // GYAANVARDHAN INTERFACE // v2.4.0
+        </footer>
+
+    </main>
+
+    <script>
+        const lenis = new Lenis()
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.from(".profile-title", { opacity: 0, y: 100, duration: 1.5, ease: "expo.out" });
+
+        gsap.utils.toArray(".thought-text").forEach(text => {
+            gsap.from(text, {
+                scrollTrigger: { trigger: text, start: "top 80%" },
+                opacity: 0, x: -50, duration: 2, ease: "power4.out"
+            });
+        });
+    </script>
+</body>
+</html>

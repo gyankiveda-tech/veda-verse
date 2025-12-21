@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARCHITECT 03 | HARSH VARDHAN</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Space+Grotesk:wght@300;500;700&family=Italiana&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <link rel="stylesheet" href="style.css"> 
+    <style>
+        :root { --harsh-accent: #bc13fe; } /* Electric Purple */
+        
+        .dossier-wrapper { padding: 0 5%; background: #000; color: #fff; }
+        .back-nav { position: fixed; top: 40px; left: 40px; z-index: 100; font-family: var(--font-h); font-size: 10px; letter-spacing: 5px; color: var(--harsh-accent); text-decoration: none; mix-blend-mode: difference; }
+
+        .hero-profile { height: 120vh; display: flex; flex-direction: column; justify-content: center; position: relative; }
+        .big-id { position: absolute; top: 20%; right: 0; font-size: 25vw; font-family: var(--font-h); color: rgba(188, 19, 254, 0.05); pointer-events: none; line-height: 0.8; }
+        
+        .profile-title { font-family: var(--font-h); font-size: 8vw; line-height: 1; text-transform: uppercase; }
+        .profile-sub { font-family: var(--font-alt); font-size: 1.8rem; color: var(--harsh-accent); margin-top: 20px; }
+
+        /* GLITCH TEXT EFFECT */
+        .glitch-text { position: relative; display: inline-block; color: #fff; }
+        .glitch-text::before, .glitch-text::after { content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.8; }
+        .glitch-text::before { left: 2px; text-shadow: -2px 0 #ff00c1; clip: rect(44px, 450px, 56px, 0); animation: glitch-anim 5s infinite linear alternate-reverse; }
+        .glitch-text::after { left: -2px; text-shadow: -2px 0 #00fff9; clip: rect(44px, 450px, 56px, 0); animation: glitch-anim2 5s infinite linear alternate-reverse; }
+
+        @keyframes glitch-anim { 0% { clip: rect(31px, 9999px, 94px, 0); } 100% { clip: rect(70px, 9999px, 71px, 0); } }
+        @keyframes glitch-anim2 { 0% { clip: rect(65px, 9999px, 100px, 0); } 100% { clip: rect(10px, 9999px, 15px, 0); } }
+
+        .narrative-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 40px; margin: 100px 0; }
+        .story-block { grid-column: span 6; padding: 40px; border: 1px solid rgba(188, 19, 254, 0.2); background: rgba(188, 19, 254, 0.02); }
+        .story-label { font-family: var(--font-h); font-size: 10px; color: var(--harsh-accent); margin-bottom: 20px; display: block; }
+        
+        .sky-crack-preview { 
+            grid-column: span 12; height: 400px; background: #080808; 
+            border: 1px dashed var(--harsh-accent); display: flex; align-items: center; justify-content: center;
+            position: relative; overflow: hidden;
+        }
+
+        .anime-silhouette { position: absolute; opacity: 0.1; font-family: var(--font-h); font-size: 15vw; color: #fff; white-space: nowrap; }
+
+        .thought-section { padding: 100px 0; border-top: 1px solid rgba(255,255,255,0.05); }
+        .thought-text { font-size: clamp(1.2rem, 3.5vw, 2.5rem); line-height: 1.4; font-weight: 300; }
+    </style>
+</head>
+<body>
+
+    <div class="noise-layer"></div>
+    <a href="index.html" class="back-nav">[[ EXIT_NARRATIVE ]]</a>
+
+    <main class="dossier-wrapper">
+        
+        <section class="hero-profile">
+            <div class="big-id">03</div>
+            <div class="v-label" style="color: var(--harsh-accent);">STATUS: STORY_SYNC_ACTIVE</div>
+            <h1 class="profile-title">HARSH<br><span class="outline-text" style="-webkit-text-stroke: 1px var(--harsh-accent);">VARDHAN</span></h1>
+            <p class="profile-sub">"The Architect of Colliding Worlds"</p>
+        </section>
+
+        <section class="thought-section">
+            <div class="thought-label">LOG_ENTRY // THE_OBSERVER</div>
+            <h2 class="thought-text">
+                "Jab Gyan ke hath par woh symbol chamka, tab maine dekha ki reality sirf toot nahi rahi... woh <span class="glitch-text" data-text="REWRITE">REWRITE</span> ho rahi hai. Anime, Cinema, aur Veda... sab ek hi stream mein behne wale hain."
+            </h2>
+        </section>
+
+        <section class="narrative-grid">
+            <div class="story-block">
+                <span class="story-label">FRAGMENT_01 // THE_REACTION</span>
+                <p style="font-size: 1.2rem; color: var(--text-dim);">
+                    "Aryan ne jab Gyan ka hath pakda, toh ek tiny spark ne puray school ka frequency badal diya. Aryan ko laga yeh 'Superhero' movie hai, par main jaanta hoon yeh usse kahin zyada gehra hai."
+                </p>
+            </div>
+            <div class="story-block">
+                <span class="story-label">FRAGMENT_02 // CINEMA_ Festival</span>
+                <p style="font-size: 1.2rem; color: var(--text-dim);">
+                    "Notice board par dikhne wale silhouettes sirf posters nahi hain. Woh portals hain. Bollywood, Tollywood aur Anime ke legends ke darmayan ki deewar khatam hone wali hai."
+                </p>
+            </div>
+
+            <div class="sky-crack-preview">
+                <div class="anime-silhouette">GOKU? HERO? VEDA?</div>
+                <div style="z-index: 1; text-align: center;">
+                    <p style="font-family: var(--font-h); font-size: 12px; letter-spacing: 10px; color: var(--harsh-accent);">SNEAK PEEK: THE FRACTURE</p>
+                    <h3 style="font-size: 3rem; margin-top: 10px;">裂ける</h3>
+                    <p style="font-size: 10px; margin-top: 10px; opacity: 0.5;">[ REALITY SHATTERING IN PROGRESS ]</p>
+                </div>
+                <div style="position: absolute; width: 200%; height: 1px; background: #fff; transform: rotate(-45deg); opacity: 0.3;"></div>
+            </div>
+        </section>
+
+        <section class="thought-section" style="border:none;">
+            <div class="thought-label">PART_2_CLIFFHANGER // THE_LINK</div>
+            <h2 class="thought-text" style="font-family: var(--font-alt); font-style: italic;">
+                "Aasman mein jo darar dikh rahi hai, woh sirf ek suruat hai. Voice ne kaha tha—<span style="color: var(--harsh-accent);">'THE LINK HAS AWAKENED'</span>. Hum sab ab us awaaz ke ghulam hain."
+            </h2>
+        </section>
+
+        <section class="thought-section">
+            <div class="status-grid">
+                <div class="status-item">
+                    <h4>NARRATIVE FLOW</h4>
+                    <p>Merging Anime Logic with Vedic Myths.</p>
+                </div>
+                <div class="status-item">
+                    <h4>OBSERVATION</h4>
+                    <p>Detected silhouettes of recognizable heroes in the sky fissure.</p>
+                </div>
+                <div class="status-item">
+                    <h4>KEY PHRASE</h4>
+                    <p>"The Link has Awakened."</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer-note" style="color: var(--harsh-accent);">
+            STORY LINE SECURED // BY HARSH VARDHAN // NARRATIVE_ENGINEER
+        </footer>
+
+    </main>
+
+    <script>
+        const lenis = new Lenis()
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Anime silhouette floating animation
+        gsap.to(".anime-silhouette", {
+            x: -200,
+            duration: 20,
+            repeat: -1,
+            yoyo: true,
+            ease: "linear"
+        });
+
+        gsap.from(".story-block", {
+            scrollTrigger: { trigger: ".narrative-grid", start: "top 80%" },
+            y: 50, opacity: 0, stagger: 0.3, duration: 1.5, ease: "power4.out"
+        });
+    </script>
+</body>
+</html>
