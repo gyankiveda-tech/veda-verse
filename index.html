@@ -1,264 +1,203 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VEDA VERSE - DIGITAL PORTAL</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>VEDA VERSE | High-Definition Reality Interface</title>
     
-    <style>
-        /* BASE & THEME */
-        body { margin: 0; background-color: #0d001a; } 
-        canvas { display: block; position: fixed; top: 0; left: 0; z-index: -1; } 
-        
-        /* CONTENT OVERLAY - PROFESSIONAL CONSOLE */
-        #content-overlay {
-            position: relative; 
-            width: 100%;
-            pointer-events: none;
-            color: #C0C0C0; 
-            font-family: 'Orbitron', sans-serif; 
-            padding: 20px 20px 80px 20px; 
-            box-sizing: border-box;
-            min-height: 100vh; 
-            z-index: 1; 
-        }
-        
-        /* THE MAIN CONTAINER - THE PROFESSOR'S CONSOLE WINDOW */
-        #main-console {
-            max-width: 800px;
-            margin: 0 auto; 
-            padding: 30px;
-            background: rgba(10, 0, 30, 0.9); 
-            border: 3px double #00FFFF; 
-            box-shadow: 0 0 25px rgba(0, 255, 255, 0.6); 
-            pointer-events: auto; 
-            margin-top: 30px;
-            margin-bottom: 30px; 
-        }
+    <meta name="description" content="A cinematic journey into the glitch multiverse of Veda.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Italiana&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
 
-        /* VARDHAN'S COMICS STUDIO HEADER */
-        #studio-header {
-            color: #FF00FF;
-            font-size: 1.1em;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 5px;
-            text-shadow: 0 0 5px #FF00FF;
-            letter-spacing: 2px;
-        }
-
-        h1 { 
-            font-size: 2.2em; 
-            color: #E0FFFF; 
-            border-bottom: 2px solid #FF00FF; 
-            padding-bottom: 10px; 
-            text-shadow: 0 0 10px #FF00FF; 
-            text-align: center;
-        }
-        
-        /* GRAND STATEMENT STYLING */
-        #grand-statement {
-            color: #00FFFF;
-            font-size: 1.4em;
-            font-weight: 900; 
-            text-align: center;
-            margin-top: -5px;
-            margin-bottom: 20px;
-            text-shadow: 0 0 10px #00FFFF, 0 0 20px rgba(0, 255, 255, 0.5);
-        }
-
-        p { font-size: 0.9em; line-height: 1.6; }
-
-        /* BOOK SECTION STYLING */
-        .book-section {
-            background: rgba(20, 0, 40, 0.5); 
-            padding: 20px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            border: 1px solid #00FFFF; 
-        }
-        .book-section h3 {
-            color: #FFC0CB; 
-            border-bottom: 1px dashed #FFC0CB;
-            padding-bottom: 5px;
-            text-shadow: none;
-        }
-        .book-section img {
-            display: block; 
-            margin: 15px auto; 
-            max-width: 250px; 
-            border: 2px solid #00FFFF; 
-            box-shadow: 0 0 8px rgba(255, 0, 255, 0.5); 
-            pointer-events: none;
-        }
-        
-        /* TEAM PROFILE STYLING (Same as before) */
-        .team-profile {
-            display: flex; gap: 20px; align-items: center; padding: 15px; margin-top: 10px;
-            border: 1px solid rgba(255, 0, 255, 0.3); background: rgba(30, 0, 50, 0.5);
-        }
-        .team-profile .photo-container { flex-shrink: 0; }
-        .team-profile img {
-            width: 100px; height: 100px; border-radius: 50%; 
-            border: 3px solid #FF00FF; object-fit: cover; margin: 0;
-            box-shadow: 0 0 10px rgba(255, 0, 255, 0.8);
-        }
-        .team-profile .info-section { font-size: 0.9em; }
-        .team-profile .role { color: #00FFFF; font-weight: bold; }
-        
-        /* BUTTON STYLING (General) */
-        .book-section a, .review-form button {
-            color: #FF00FF; font-weight: 700; transition: color 0.3s;
-            display: block; text-align: center; padding: 12px 15px;
-            border: 1px solid #FF00FF; background-color: rgba(255, 0, 255, 0.1);
-            font-family: 'Orbitron', sans-serif; /* Added for the button */
-        }
-        .book-section a:hover {
-            color: #E0FFFF; text-shadow: 0 0 10px #E0FFFF; background-color: rgba(255, 0, 255, 0.3);
-        }
-        .book-section .deactivated-link {
-            color: #555555; border: 1px solid #555555; background-color: rgba(150, 150, 150, 0.1);
-            cursor: default; pointer-events: none; 
-        }
-
-        /* NEW: FREE DOWNLOAD BUTTON STYLING (Part 1 Focus) */
-        .free-download-link {
-            background: #00FF00 !important; /* Neon Green */
-            color: #0d001a !important; /* Dark text */
-            text-shadow: none !important;
-            font-size: 1.2em !important; /* Bigger text */
-            padding: 18px 15px !important; /* More padding */
-            border: 2px solid #00FF00 !important; 
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.8) !important; /* Green neon glow */
-            font-weight: 900 !important;
-            transition: background 0.3s, box-shadow 0.3s;
-        }
-        .free-download-link:hover {
-            background: #00CC00 !important; /* Darker Green on hover */
-            color: #0d001a !important; 
-            box-shadow: 0 0 20px rgba(0, 255, 0, 1.0) !important; 
-        }
-
-        /* NEW: REVIEW FORM BUTTON STYLING (The only part we need to keep) */
-        .review-form button {
-            display: block; width: 100%; padding: 12px; margin-top: 20px;
-            background: #FF00FF; color: #0d001a; border: none; cursor: pointer;
-            font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 1.1em;
-            transition: background 0.3s;
-            box-shadow: 0 0 10px rgba(255, 0, 255, 0.7);
-        }
-        .review-form button:hover {
-            background: #00FFFF; color: #0d001a; box-shadow: 0 0 10px rgba(0, 255, 255, 0.9);
-        }
-
-        /* The old rating and input CSS is now redundant but kept for cleanliness */
-        .review-form label, .review-form input[type="text"], .review-form textarea, .rating { display: none; }
-        
-        /* PROFESSIONAL FOOTER */
-        #site-footer {
-            position: fixed; bottom: 0; left: 0; width: 100%;
-            background: #100030; color: #808080; text-align: center; 
-            padding: 10px 0; font-size: 0.8em; border-top: 1px solid #00FFFF; z-index: 10;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    
-    <div id="content-overlay">
-        <div id="main-console">
-            
-            <div id="studio-header">VARDHAN'S COMICS STUDIO PRESENTS</div>
-            <h1>[ GYAN KI VEDA // DIGITAL PORTAL ]</h1>
-            <div id="grand-statement">INDIA'S LARGEST MULTIVERSE GLITCH COMIC SERIES</div>
-            
-            <p>:: WELCOME PROFESSOR :: ACCESS LEVEL: MULTIVERSE REALITY INITIATED (v0.2.0)</p>
-            
-            <div class="book-section">
-                <h3>[ ACCESS LOG ] PROJECT OVERVIEW</h3>
-                <p><strong>DATA TYPE: GRAPHIC NOVEL / CODE-FICTION COMIC SERIES</strong></p>
-                <p>
-                    SUMMARY: **GYAN KI VEDA** is not just fiction; it's a **TALE WHERE UNIVERSES COLLIDE**. It follows an ordinary Indian boy whose life is hijacked by destiny, promoting **IMAGINATION TO REALITY** through code and multiverse glitches. This portal grants access to the archived volumes of this high-level reality documentation.
-                </p>
+<body class="loading">
+
+    <div class="noise-layer"></div>
+    <div class="glitch-overlay"></div>
+    <div class="cursor-follower" id="cursor">
+        <div class="cursor-inner"></div>
+        <svg class="cursor-svg" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="45"></circle>
+        </svg>
+    </div>
+
+    <div id="master-loader">
+        <div class="loader-wrapper">
+            <div class="loader-top">
+                <span class="l-status">SYSTEM CHECK: ACTIVE</span>
+                <span class="l-version">v2.4.0</span>
             </div>
-            
-            <div class="book-section">
-                <h3>[ CORE DATA ] RESEARCH TEAM PROFILE</h3>
-                
-                <div class="team-profile">
-                    <div class="photo-container"><img src="author-photo.jpg" alt="Gyan Vardhan Photo"></div>
-                    <div class="info-section">
-                        <div class="role">Lead Author & Concept Architect:</div>
-                        <p><strong>Gyan Vardhan (ज्ञान वर्धन)</strong></p>
-                        <p>Specialization: **Reality Glitch Analysis & Code Fiction Synthesis.** Primary source of VEDA timeline data and narrative structure. Responsible for initiating the Glitch Protocol.</p>
-                    </div>
+            <div class="loader-center">
+                <h1 class="load-title" data-text="VEDA VERSE">VEDA VERSE</h1>
+                <div class="progress-container">
+                    <div class="progress-bar"></div>
                 </div>
-                
-                <div class="team-profile">
-                    <div class="photo-container"><img src="editor-jay.jpg" alt="Jai Vardhan Photo"></div>
-                    <div class="info-section">
-                        <div class="role">Data Integrity Editor:</div>
-                        <p><strong>Jai Vardhan (जय वर्धन)</strong></p>
-                        <p>Specialization: **Structural Consistency & Universal Law Enforcement.** Ensures that the VEDA narrative maintains logical flow and prevents timeline paradoxes within the comic data stream.</p>
-                    </div>
-                </div>
-
-                <div class="team-profile">
-                    <div class="photo-container"><img src="editor-harsh.jpg" alt="Harsh Vardhan Photo"></div>
-                    <div class="info-section">
-                        <div class="role">Narrative Flow Editor:</div>
-                        <p><strong>Harsh Vardhan (हर्ष वर्धन)</strong></p>
-                        <p>Specialization: **Chronological Sequencing & User Experience (UX).** Manages the reader's journey, making sure the complex multiverse story is delivered in an understandable and engaging format.</p>
-                    </div>
-                </div>
-
             </div>
-            
-            <div class="book-section">
-                <h3>[ FREE ACCESS ] GYAN KI VEDA - PART 1 // CORE DATA DOWNLOAD</h3>
-                
-                <img src="poster-part1.jpg" alt="Gyan Ki Veda Part 1 Cover" style="width: 100%; max-width: 250px; border: 2px solid #00FFFF; margin-bottom: 15px; pointer-events: none;">
-                
-                <p>Status: ONLINE. Access Granted. Download the first unit of GYAN KI VEDA. Proceed with research protocol. **(Note: यह वॉल्यूम पूरी तरह से निःशुल्क उपलब्ध है)**</p>
-                
-                <a href="https://drive.google.com/uc?export=download&id=13ZkoRwrM_2mLTI_H1QJY3Wy5PraTJV2l" target="_blank" download class="free-download-link">
-                    ⚡ DOWNLOAD PART 1 FREE PDF (FREE ACCESS) ⚡
-                </a>
-            </div>
-
-            <div class="book-section">
-                <h3>[ TIMELINE INPUT ] अपनी प्रतिक्रिया और रेटिंग दर्ज करें</h3>
-                <p>Status: ONLINE. इस कॉमिक को रेट करें और अपनी बहुमूल्य राय/समीक्षा दें। यह आपको सुरक्षित प्रतिक्रिया फॉर्म (Secured Feedback Form) पर रीडायरेक्ट करेगा।</p>
-                
-                <form class="review-form" action="https://form.typeform.com/to/RqozMzFq" method="GET" target="_blank">
-                    
-                    <label for="username" style="display: none;">:: RESEARCHER NAME/CODE ::</label>
-                    <input type="text" id="username" name="username" placeholder="Hidden Field">
-                    <div class="rating" style="display: none;"></div>
-                    <label for="review" style="display: none;">:: ANOMALY REPORT ::</label>
-                    <textarea id="review" name="review" placeholder="Hidden Field"></textarea>
-                    
-                    <button type="submit">⚡ अपनी प्रतिक्रिया भेजें (Submit Feedback) ⚡</button>
-                    <p style="text-align: center; font-size: 0.75em; color: #FF00FF;">(नोट: यह बटन एक नए टैब में सुरक्षित फीडबैक फॉर्म खोलेगा।)</p>
-                </form>
-                </div>
-
-            <div class="book-section">
-                <h3>[ LOCKED ] GYAN KI VEDA - PART 2 // REALITY FRACTURE IMMINENT</h3>
-                <p>Status: PENDING. Next dimension access is currently restricted. Price: **PRICE DATA PENDING**</p>
-                
-                <img src="poster-part2-coming-soon.jpg" alt="Part 2 Coming Soon" style="width: 100%; max-width: 250px; border: 2px solid #FF00FF; margin-bottom: 15px; pointer-events: none;">
-                
-                <a href="#" class="deactivated-link">:: LAUNCH PROTOCOL BLOCKED ::</a>
+            <div class="loader-bottom">
+                <p id="loading-msg">SYNCHRONIZING MULTIVERSE DATA...</p>
+                <span class="percentage">00%</span>
             </div>
         </div>
     </div>
-    
-    <div id="site-footer">
-        VEDA VERSE PORTAL v0.2.0 | © 2025 ALL RIGHTS RESERVED | ACCESS CODE: GYAANVARDHAN
-    </div>
-    
+
+    <main id="main-scroller">
+
+        <nav class="v-nav">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <span class="logo-text">V.V</span>
+                </div>
+                <div class="nav-links">
+                    <div class="n-item"><a href="#lore" data-hover="VISION">VISION</a></div>
+                    <div class="n-item"><a href="#archives" data-hover="STREAM">STREAM</a></div>
+                    <div class="n-item"><a href="#team" data-hover="STUDIO">STUDIO</a></div>
+                </div>
+                <div class="nav-cta">
+                    <a href="#" class="btn-minimal">INITIATE</a>
+                </div>
+            </div>
+        </nav>
+
+        <section class="hero-section" id="home">
+            <div class="hero-bg-media"></div>
+            <div class="hero-v-wrapper">
+                <div class="hero-top-meta">/ / REALITY FRACTURE DETECTED</div>
+                <h2 class="hero-sub">THE FIRST GLITCH MULTIVERSE</h2>
+                <div class="hero-main-title">
+                    <span class="reveal-box">GYAN KI</span>
+                    <span class="reveal-box outline-text">VEDA</span>
+                </div>
+                <div class="hero-footer-meta">
+                    <div class="m-box">
+                        <small>COORDINATES</small>
+                        <span>28.6139° N, 77.2090° E</span>
+                    </div>
+                    <div class="scroll-prompt">
+                        <span class="s-line"></span>
+                        <span class="s-text">DESCEND INTO THE VOID</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="lore-v3" id="lore">
+            <div class="v-container">
+                <div class="v-label">/ 01 / THE MANIFESTO</div>
+                <div class="manifesto-grid">
+                    <div class="m-left">
+                        <h3 class="m-title">Beyond the <br> Divine Code.</h3>
+                    </div>
+                    <div class="m-right">
+                        <p class="m-para p-animate">Gyan Ki Veda isn’t just mythology; it’s a <strong>high-fidelity breach</strong>. We explore the boundary where ancient Vedic scripts intersect with the cyber-punk digital future. Every glitch in our story is a hidden truth in your reality.</p>
+                        <div class="m-features">
+                            <div class="f-box"><h4>MYTHOS</h4><p>Vedic Core Logic</p></div>
+                            <div class="f-box"><h4>TECH</h4><p>Reality Glitch Synthesis</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="archives-v3" id="archives">
+            <div class="v-container">
+                <div class="v-header">
+                    <div class="v-label">/ 02 / DATA ARCHIVES</div>
+                    <h2 class="v-title-main">COLLECTED DATA</h2>
+                </div>
+                
+                <div class="archive-showcase">
+                    <div class="a-item-wrap">
+                        <div class="a-item">
+                            <div class="a-visual">
+                                <img src="poster-part1.jpg" alt="Part 1">
+                                <div class="a-overlay"></div>
+                            </div>
+                            <div class="a-content">
+                                <span class="a-num">VOL. 01</span>
+                                <h3 class="a-name">THE AWAKENING</h3>
+                                <p class="a-desc">The first synchronization of the Indian subcontinent's digital soul.</p>
+                                <a href="https://drive.google.com/uc?export=download&id=13ZkoRwrM_2mLTI_H1QJY3Wy5PraTJV2l" class="btn-line-luxury">DOWNLOAD FOR FREE ↓</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="a-item-wrap">
+                        <div class="a-item locked">
+                            <div class="a-visual">
+                                <img src="poster-part2-coming-soon.jpg" alt="Part 2">
+                                <div class="a-overlay"></div>
+                                <div class="lock-icon">ENCRYPTED</div>
+                            </div>
+                            <div class="a-content">
+                                <span class="a-num">VOL. 02</span>
+                                <h3 class="a-name">FRACTURE</h3>
+                                <p class="a-desc">Reality synchronization in progress. Access restricted by System Admin.</p>
+                                <a href="#" class="btn-line-luxury disabled">COMING SOON...</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="team-v3" id="team">
+            <div class="v-container">
+                <div class="v-label">/ 03 / THE ARCHITECTS</div>
+                <div class="team-scroller">
+                    <div class="t-member" data-link="gyan.html" style="cursor: pointer;">
+                        <span class="t-role">LEAD ARCHITECT</span>
+                        <h2 class="t-name">GYAN VARDHAN</h2>
+                        <div class="t-line"></div>
+                    </div>
+                    <div class="t-member" data-link="jai.html" style="cursor: pointer;">
+                        <span class="t-role">DATA INTEGRITY</span>
+                        <h2 class="t-name">JAI VARDHAN</h2>
+                        <div class="t-line"></div>
+                    </div>
+                    <div class="t-member" data-link="harsh.html" style="cursor: pointer;">
+                        <span class="t-role">NARRATIVE FLOW</span>
+                        <h2 class="t-name">HARSH VARDHAN</h2>
+                        <div class="t-line"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="v-footer">
+            <div class="f-grid">
+                <div class="f-left">
+                    <h2 class="f-logo">VEDA VERSE</h2>
+                    <p>India's First Glitch Multiverse Documentation.</p>
+                </div>
+                <div class="f-right">
+                    <div class="f-status">
+                        <span class="pulse"></span> CONNECTED TO SERVER: GYAANVARDHAN
+                    </div>
+                    <div class="f-bottom">
+                        <span>v2.4.0 // 2025</span>
+                        <span>PRIVACY_PROTOCOL</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+    </main>
+
+    <svg style="display:none;">
+        <defs>
+            <filter id="glitch-filter">
+                <feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0" />
+            </filter>
+        </defs>
+    </svg>
+
     <script src="script.js"></script>
 </body>
 </html>
