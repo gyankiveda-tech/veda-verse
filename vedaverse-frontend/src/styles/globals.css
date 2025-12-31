@@ -1,0 +1,148 @@
+/* VedaVerse Cosmic-Noir Theme */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&display=swap');
+
+:root {
+  --obsidian: #050505;
+  --space-grey: #1a1a1a;
+  --electric-gold: #FFD700;
+  --neon-blue: #00F3FF;
+  --neon-red: #ff4757;
+  --neon-green: #00ff88;
+  --text-dim: #b3b3b3;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden; /* Mobile side-scroll fix */
+  background-color: var(--obsidian);
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  scroll-behavior: smooth;
+}
+
+h1, h2, h3, .cinzel {
+  font-family: 'Cinzel', serif;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* --- Responsive Containers (MAIN FIX) --- */
+.container, .main-wrapper, .vault-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px; /* Mobile par screen se chipkne nahi dega */
+}
+
+/* --- Interaction Buttons --- */
+.inter-btn {
+  background: #111;
+  border: 1px solid #333;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-weight: bold;
+  font-family: 'Inter', sans-serif;
+}
+
+.inter-btn:hover { border-color: var(--electric-gold); }
+
+.btn-active-like {
+  border-color: var(--neon-green) !important;
+  color: var(--neon-green) !important;
+  background: rgba(0, 255, 136, 0.1) !important;
+  box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
+}
+
+.btn-active-dislike {
+  border-color: var(--neon-red) !important;
+  color: var(--neon-red) !important;
+  background: rgba(255, 71, 87, 0.1) !important;
+  box-shadow: 0 0 15px rgba(255, 71, 87, 0.2);
+}
+
+/* --- Heart Explosion --- */
+.heart-explosion {
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 8rem;
+  z-index: 999;
+  pointer-events: none;
+  animation: explode 1.2s ease-out forwards;
+}
+
+@keyframes explode {
+  0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+  30% { transform: translate(-50%, -50%) scale(1.5); opacity: 1; filter: drop-shadow(0 0 20px red); }
+  100% { transform: translate(-50%, -50%) scale(3); opacity: 0; }
+}
+
+/* --- Comment Styles --- */
+.comment-card {
+  margin-bottom: 20px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  border-left: 3px solid transparent;
+  transition: 0.3s;
+}
+
+.comment-card:hover {
+  border-left: 3px solid var(--electric-gold);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Cinematic Background */
+.cosmic-bg {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #050505 100%);
+  z-index: -1;
+}
+
+/* Gold Glow Button */
+.btn-gold {
+  background: transparent;
+  border: 1px solid var(--electric-gold);
+  color: var(--electric-gold);
+  padding: 12px 24px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.btn-gold:hover {
+  background: var(--electric-gold);
+  color: var(--obsidian);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+}
+
+.no-select { user-select: none; -webkit-user-drag: none; }
+
+/* --- MOBILE SPECIFIC PATCH (768px and below) --- */
+@media (max-width: 768px) {
+  h1 { font-size: 1.8rem !important; }
+  h2 { font-size: 1.4rem !important; }
+  
+  /* Vault images aur cards ko center karne ke liye */
+  .vault-grid, .team-grid {
+    grid-template-columns: 1fr !important;
+    padding: 10px !important;
+  }
+
+  .creator-card {
+    width: 100% !important;
+    margin: 0 auto 20px !important;
+  }
+}

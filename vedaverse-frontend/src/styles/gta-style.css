@@ -1,0 +1,107 @@
+/* 1. Global Cinematic Reset */
+:root {
+  --gta-yellow: #ffcc00;
+  --gta-pink: #ff00ff;
+  --gta-cyan: #00ffff;
+  --bg-dark: #000000;
+  --text-main: #ffffff;
+  --text-dim: #aaaaaa;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 2. Typography */
+.title-glow {
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--gta-yellow);
+  text-shadow: 0 0 20px rgba(255, 204, 0, 0.4);
+  letter-spacing: -1px;
+}
+
+/* 3. Scanline Effect (Fixed for full screen) */
+.vortex-container::before {
+  content: " ";
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+              linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  z-index: 999;
+  background-size: 100% 2px, 3px 100%;
+  pointer-events: none;
+}
+
+/* 4. Rockstar Button Styling */
+.gta-btn {
+  background: var(--gta-yellow);
+  color: #000;
+  padding: 15px 40px;
+  font-size: 0.9rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s all ease;
+  clip-path: polygon(5% 0, 100% 0, 95% 100%, 0 100%);
+  margin-top: 20px;
+}
+
+.gta-btn:hover {
+  transform: scale(1.05) skewX(-2deg);
+  background: #fff;
+  box-shadow: 0 0 40px rgba(255, 204, 0, 0.4);
+}
+
+/* 5. Loading Animation for 3D */
+.loading-screen {
+  background: #000;
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-bar {
+  width: 200px;
+  height: 2px;
+  background: #333;
+  margin-top: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.loading-bar::after {
+  content: "";
+  position: absolute;
+  width: 100px;
+  height: 100%;
+  background: var(--gta-yellow);
+  animation: loading-slide 1.5s infinite ease-in-out;
+}
+
+@keyframes loading-slide {
+  0% { left: -100px; }
+  100% { left: 200px; }
+}

@@ -1,0 +1,6 @@
+node_modules/
+.next/
+vedaverse-frontend/node_modules/
+vedaverse-frontend/.next/
+*.pdf
+*.glb

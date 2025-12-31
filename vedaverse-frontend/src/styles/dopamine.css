@@ -1,0 +1,95 @@
+/* --- DOPAMINE & BRAIN ROT CORE STYLES --- */
+
+:root {
+  --electric-gold: #ffcc00;
+  --neon-green: #00ff88;
+  --cyber-red: #ff4757;
+  --deep-black: #050505;
+  --vault-glow: rgba(255, 204, 0, 0.3);
+}
+
+/* 1. The Asset Vault Glow - Makes the balance look like treasure */
+.vault-card-premium {
+  background: linear-gradient(145deg, #0a0a0a, #111);
+  border: 1px solid var(--electric-gold);
+  box-shadow: 0 0 20px var(--vault-glow);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.vault-card-premium:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 40px var(--vault-glow);
+}
+
+/* 2. Pulsing Gold Text - For the Token Balance */
+.glow-text-gold {
+  color: var(--electric-gold);
+  text-shadow: 0 0 10px var(--electric-gold), 0 0 20px var(--electric-gold);
+  animation: dopamine-pulse 1.5s infinite alternate;
+}
+
+@keyframes dopamine-pulse {
+  from { opacity: 0.8; text-shadow: 0 0 10px var(--electric-gold); }
+  to { opacity: 1; text-shadow: 0 0 25px var(--electric-gold), 0 0 40px #fff; }
+}
+
+/* 3. The "Jackpot" Button - High CTA (Call to Action) */
+.buy-btn-dopamine {
+  background: var(--electric-gold);
+  color: black;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border: none;
+  padding: 15px 30px;
+  clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.buy-btn-dopamine:active {
+  transform: scale(0.9);
+  filter: brightness(1.2);
+}
+
+/* 4. Ticker Animation - For the FOMO Feed */
+.ticker-container {
+  background: var(--electric-gold);
+  color: #000;
+  white-space: nowrap;
+  padding: 8px 0;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+  font-size: 0.8rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+/* 5. Rank Badge Shine - Makes users want to upgrade */
+.rank-badge-shiny {
+  background: linear-gradient(90deg, #ffd700, #fff, #ffd700);
+  background-size: 200% auto;
+  color: #000;
+  animation: shine-rank 3s linear infinite;
+}
+
+@keyframes shine-rank {
+  to { background-position: 200% center; }
+}
+
+/* 6. Neural Injection Loading Bar */
+.progress-bar-wrap {
+  width: 100%;
+  height: 4px;
+  background: #222;
+  margin-top: 10px;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: var(--neon-green);
+  box-shadow: 0 0 10px var(--neon-green);
+  width: 0%;
+  transition: width 0.5s ease-in-out;
+}
