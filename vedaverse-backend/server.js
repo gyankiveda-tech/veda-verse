@@ -11,8 +11,14 @@ const paymentRoutes = require('./routes/paymentRoutes');
 dotenv.config();
 const app = express();
 
-// Middlewares - Isse Frontend aur Backend ka connection smooth hoga
-app.use(cors());
+// --- UPDATED CORS SETTINGS ---
+// Isse aapka naya Vercel domain backend se connect ho payega
+app.use(cors({
+    origin: '*', // Testing ke liye sab allow hai, connection issue solve ho jayega
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
 
 // Database Connection
@@ -29,8 +35,8 @@ app.get('/', (req, res) => {
     res.send("VedaVerse API is Running... Galactic Gateway Open.");
 });
 
-// Render hamesha PORT environment variable bhejta hai, use prioritize karna zaroori hai
-const PORT = process.env.PORT || 8000; 
+// Render ka PORT fix
+const PORT = process.env.PORT || 5000; 
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 Server navigating at port: ${PORT}`);
 });
