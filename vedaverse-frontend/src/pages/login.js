@@ -2,52 +2,25 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { auth, googleProvider, saveUserToDB } from '../lib/firebase'; 
+import { auth, googleProvider } from '../lib/firebase'; 
 import { 
   signInWithPopup, 
   signInWithEmailAndPassword, 
   onAuthStateChanged, 
-  signOut, 
   setPersistence, 
   browserLocalPersistence 
 } from 'firebase/auth';
-
-// --- UPGRADED COMMANDER ICON ---
-const CommanderIcon = ({ initial = "C" }) => (
-  <div className="icon-box">
-    <svg width="100" height="100" viewBox="0 0 100 100" fill="none">
-      <circle cx="50" cy="50" r="48" stroke="var(--electric-gold)" strokeWidth="0.5" strokeDasharray="4 4" opacity="0.3" />
-      <circle cx="50" cy="50" r="44" stroke="var(--electric-gold)" strokeWidth="2" opacity="0.8" />
-      <mask id="circleMask"><circle cx="50" cy="50" r="42" fill="white" /></mask>
-      <g mask="url(#circleMask)">
-        <circle cx="50" cy="35" r="12" fill="var(--electric-gold)" opacity="0.2" stroke="var(--electric-gold)" strokeWidth="1"/>
-        <path d="M20 85C20 65 30 55 50 55C70 55 80 65 80 85" fill="var(--electric-gold)" opacity="0.2" stroke="var(--electric-gold)" strokeWidth="1"/>
-      </g>
-      <rect x="60" y="55" width="24" height="24" rx="6" fill="#000" stroke="var(--electric-gold)" strokeWidth="1.5" />
-      <text x="72" y="68" dominantBaseline="middle" textAnchor="middle" fill="var(--electric-gold)" fontSize="14" fontWeight="bold" style={{ textShadow: '0 0 8px var(--electric-gold)' }}>
-        {initial}
-      </text>
-    </svg>
-    <style jsx>{`
-      .icon-box { animation: float 3s ease-in-out infinite; display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.2)); }
-      @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-    `}</style>
-  </div>
-);
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(true); 
-  const [authAction, setAuthAction] = useState(false); // New state to prevent UI flickers
+  const [authAction, setAuthAction] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    // Listen for Auth changes
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser && !authAction) {
-        // Agar user logged in hai aur abhi koi naya login action nahi chal raha
-        // Toh seedha vault par bhej do (Data save hum login handlers mein kar chuke honge)
         router.push('/vault');
       } else {
         setLoading(false);
@@ -60,21 +33,11 @@ export default function Login() {
   const handleGoogleLogin = async () => {
     try { 
       setAuthAction(true);
-      setLoading(true); // Start loading UI
+      setLoading(true);
       await setPersistence(auth, browserLocalPersistence);
-      const result = await signInWithPopup(auth, googleProvider);
+      await signInWithPopup(auth, googleProvider);
       
-      // Inject Provider Info before saving to DB
-      const userData = {
-        uid: result.user.uid,
-        email: result.user.email,
-        displayName: result.user.displayName,
-        photoURL: result.user.photoURL,
-        authMethod: 'google.com',
-        lastLogin: new Date().toISOString()
-      };
-
-      await saveUserToDB(userData);
+      // ✅ Tip: Google login ke baad backend ko inform karna zaroori hai (Optional but good)
       router.push('/vault');
     } 
     catch (error) { 
@@ -89,26 +52,23 @@ export default function Login() {
   // Handle Commander (Email) Login
   const handleCommanderLogin = async (e) => {
     e.preventDefault();
-    try { 
-      setAuthAction(true);
-      setLoading(true);
-      await setPersistence(auth, browserLocalPersistence);
-      const result = await signInWithEmailAndPassword(auth, email, password);
-      
-      const userData = {
-        uid: result.user.uid,
-        email: result.user.email,
-        authMethod: 'password',
-        lastLogin: new Date().toISOString()
-      };
+    setLoading(true);
+    setAuthAction(true);
 
-      await saveUserToDB(userData);
+    try { 
+      // 1. Firebase Login
+      await setPersistence(auth, browserLocalPersistence);
+      await signInWithEmailAndPassword(auth, email, password);
+
+      // 2. ✅ OPTIONAL: Backend Database Check (Agar aapne backend mein login route banaya hai)
+      // const res = await fetch('https://veda-verse-g71v.onrender.com/api/auth/login', { ... });
+
       router.push('/vault');
     } 
     catch (error) { 
       setLoading(false);
       setAuthAction(false);
-      alert("Invalid Credentials, Commander."); 
+      alert("Invalid Credentials, Commander. Access Denied."); 
     }
   };
 
