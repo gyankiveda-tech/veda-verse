@@ -37,7 +37,7 @@ export default function Login() {
       await setPersistence(auth, browserLocalPersistence);
       await signInWithPopup(auth, googleProvider);
       
-      // ✅ Tip: Google login ke baad backend ko inform karna zaroori hai (Optional but good)
+      // Google login success
       router.push('/vault');
     } 
     catch (error) { 
@@ -60,8 +60,17 @@ export default function Login() {
       await setPersistence(auth, browserLocalPersistence);
       await signInWithEmailAndPassword(auth, email, password);
 
-      // 2. ✅ OPTIONAL: Backend Database Check (Agar aapne backend mein login route banaya hai)
-      // const res = await fetch('https://veda-verse-g71v.onrender.com/api/auth/login', { ... });
+      // 2. ✅ UPDATED: Using the new live Render URL for backend check (if needed)
+      // Note: Humne register aur verify-otp mein isi domain ka use kiya hai.
+      try {
+          await fetch('https://veda-verse-9hpl.onrender.com/api/auth/login', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email, password })
+          });
+      } catch (err) {
+          console.log("Backend login sync skipped or failed, proceeding with Firebase.");
+      }
 
       router.push('/vault');
     } 
