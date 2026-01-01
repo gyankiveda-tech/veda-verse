@@ -2,8 +2,14 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { useGLTF, Float, PerspectiveCamera, useAnimations, useProgress, Html } from '@react-three/drei';
 import { Suspense, useRef, useEffect, useState } from 'react';
 import * as THREE from 'three';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 
-// --- CUSTOM LOADER COMPONENT ---
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
+// --- LOADER ---
 function Loader() {
   const { progress } = useProgress();
   return (
@@ -26,7 +32,8 @@ function Loader() {
   );
 }
 
-function Model({ scrollProgress }) {
+// --- MODEL COMPONENT ---
+function Model({ progressValue }) {
   const { scene, animations } = useGLTF('/models/character.glb');
   const modelRef = useRef();
   const { actions, names } = useAnimations(animations, modelRef);
@@ -37,113 +44,173 @@ function Model({ scrollProgress }) {
     }
   }, [actions, names]);
 
-  useFrame((state) => {
-    const isMobile = window.innerWidth < 768;
-    
-    // Smooth camera movements
-    const baseZoom = isMobile ? 18 : 12; 
-    const targetZoom = isMobile ? 8 : 4.2;
+  useFrame((state, delta) => {
+    const baseZoom = 14; 
+    const targetZoom = 10; 
 
-    state.camera.position.z = THREE.MathUtils.lerp(baseZoom, targetZoom, scrollProgress);
-    state.camera.position.y = THREE.MathUtils.lerp(0.5, 1.2, scrollProgress);
-    state.camera.position.x = THREE.MathUtils.lerp(0, 0.2, scrollProgress);
-
-    state.camera.lookAt(0, 0.5, 0);
+    state.camera.position.z = THREE.MathUtils.lerp(state.camera.position.z, THREE.MathUtils.lerp(baseZoom, targetZoom, progressValue), 0.05);
+    state.camera.position.y = THREE.MathUtils.lerp(state.camera.position.y, THREE.MathUtils.lerp(0.5, 2.2, progressValue), 0.05);
+    state.camera.position.x = THREE.MathUtils.lerp(state.camera.position.x, THREE.MathUtils.lerp(0, -1.5, progressValue), 0.05);
+    state.camera.lookAt(0, 1, 0);
 
     if (modelRef.current) {
-      modelRef.current.rotation.y = THREE.MathUtils.lerp(Math.PI, 0, scrollProgress);
+      modelRef.current.position.y = -8.5; 
+      const targetRotY = THREE.MathUtils.lerp(Math.PI, Math.PI * 3, progressValue);
+      modelRef.current.rotation.y = THREE.MathUtils.damp(modelRef.current.rotation.y, targetRotY, 3, delta);
     }
   });
 
-  return (
-    <primitive 
-      ref={modelRef}
-      object={scene} 
-      scale={window.innerWidth < 768 ? 3.0 : 3.8} 
-      position={[0, -10.5, 0]} 
-    />
-  );
+  return <primitive ref={modelRef} object={scene} scale={3.5} />;
 }
 
 export default function Scene3D() {
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const mobileTextRef = useRef(null);
+  const hudRef = useRef(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = window.scrollY / (totalHeight || 1);
-      setScrollProgress(progress);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || window.innerHeight > window.innerWidth);
     };
-    
-    // Add event listener for scroll to trigger both 3D and Music
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    const trigger = ScrollTrigger.create({
+      trigger: ".hero-wrapper",
+      start: "top top",
+      end: "bottom bottom",
+      scrub: 2,
+      onUpdate: (self) => setProgress(self.progress),
+    });
+
+    let ctx = gsap.context(() => {
+      if (isMobile && mobileTextRef.current) {
+        gsap.to([mobileTextRef.current, hudRef.current], {
+          y: -100,
+          opacity: 0,
+          scrollTrigger: {
+            trigger: ".hero-wrapper",
+            start: "top top",
+            end: "top -30%",
+            scrub: true,
+          }
+        });
+      }
+    });
+
+    return () => {
+      trigger.kill();
+      ctx.revert();
+      window.removeEventListener('resize', checkMobile);
+    }
+  }, [isMobile]);
+
+  if (isMobile) {
+    return (
+      <div className="mobile-interface">
+        {/* Futuristic Background Grid */}
+        <div className="cyber-grid"></div>
+
+        {/* HUD Elements */}
+        <div className="hud-layer" ref={hudRef}>
+          <div className="hud-corner top-left">SYS_v2.0.26</div>
+          <div className="hud-corner top-right">LOC: 28.61° N</div>
+          <div className="hud-corner bottom-left">LINK_STABLE</div>
+          <div className="hud-corner bottom-right">SYNC: 98%</div>
+          
+          <div className="side-bar-left">
+            {[...Array(10)].map((_, i) => <div key={i} className="dot"></div>)}
+          </div>
+          
+          <div className="coordinate-stream">
+            <div>X: {(progress * 100).toFixed(2)}</div>
+            <div>Y: {(Math.random() * 50).toFixed(2)}</div>
+            <div>Z: 0.8842</div>
+          </div>
+        </div>
+
+        <div className="mobile-hero-content" ref={mobileTextRef}>
+          <div className="glitch-wrapper">
+            <h1 className="mobile-title">VEDAVERSE</h1>
+          </div>
+          <div className="commander-badge">NEURAL_INTERFACE_ACTIVE</div>
+          <p className="mobile-desc">DECRYPTING REALITY. SCROLL TO SYNC.</p>
+          <div className="mobile-scanner"></div>
+        </div>
+
+        <style jsx>{`
+          .mobile-interface { 
+            height: 100vh; width: 100%; 
+            background: #000;
+            display: flex; align-items: center; justify-content: center; 
+            position: fixed; top: 0; left: 0; z-index: 10; 
+            pointer-events: none;
+            overflow: hidden;
+          }
+
+          .cyber-grid {
+            position: absolute; width: 200%; height: 200%;
+            background-image: 
+              linear-gradient(rgba(255, 204, 0, 0.05) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255, 204, 0, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            transform: perspective(500px) rotateX(60deg);
+            top: -50%; animation: gridMove 20s infinite linear;
+          }
+
+          @keyframes gridMove { 0% { transform: perspective(500px) rotateX(60deg) translateY(0); } 100% { transform: perspective(500px) rotateX(60deg) translateY(40px); } }
+
+          .hud-layer { position: absolute; width: 100%; height: 100%; padding: 30px; }
+          .hud-corner { position: absolute; font-family: monospace; color: #ffcc00; font-size: 0.5rem; letter-spacing: 2px; opacity: 0.6; }
+          .top-left { top: 40px; left: 20px; border-left: 1px solid #ffcc00; padding-left: 5px; }
+          .top-right { top: 40px; right: 20px; border-right: 1px solid #ffcc00; padding-right: 5px; }
+          .bottom-left { bottom: 40px; left: 20px; }
+          .bottom-right { bottom: 40px; right: 20px; }
+
+          .side-bar-left { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 8px; }
+          .dot { width: 3px; height: 3px; background: #ffcc00; border-radius: 50%; opacity: 0.3; animation: blink 2s infinite; }
+          @keyframes blink { 0%, 100% { opacity: 0.1; } 50% { opacity: 0.8; } }
+
+          .coordinate-stream { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); font-family: monospace; color: #ffcc00; font-size: 0.5rem; text-align: right; opacity: 0.4; }
+
+          .mobile-hero-content { text-align: center; z-index: 20; will-change: transform, opacity; }
+          .mobile-title { font-size: 3.8rem; color: #ffcc00; letter-spacing: 8px; text-shadow: 0 0 30px rgba(255, 204, 0, 0.3); margin-bottom: 5px; font-weight: 900; }
+          .commander-badge { display: inline-block; border: 1px solid rgba(255, 204, 0, 0.5); color: #ffcc00; padding: 4px 12px; font-size: 0.55rem; letter-spacing: 3px; margin-bottom: 15px; background: rgba(0,0,0,0.5); }
+          .mobile-desc { color: #888; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; }
+          
+          .mobile-scanner { width: 100%; height: 2px; background: linear-gradient(to right, transparent, #ffcc00, transparent); position: absolute; top: 0; left: 0; animation: scan 3s infinite ease-in-out; opacity: 0.2; }
+          @keyframes scan { 0% { top: 10%; } 100% { top: 90%; } }
+        `}</style>
+      </div>
+    );
+  }
 
   return (
-    <div className="canvas-wrapper">
-      <Canvas 
-        shadows 
-        dpr={[1, 2]} 
-        gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-      >
-        <PerspectiveCamera makeDefault position={[0, 0.5, 12]} fov={window.innerWidth < 768 ? 45 : 35} />
-        
-        <ambientLight intensity={0.5} /> 
-        <pointLight position={[0, 1.5, 5]} intensity={6} color="#ffffff" />
-        <spotLight position={[5, 10, 5]} angle={0.15} penumbra={1} intensity={4} color="#ffcc00" />
-
+    <div className="canvas-wrapper pc-bg">
+      <Canvas shadows dpr={[1, 2]} gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}>
+        <PerspectiveCamera makeDefault position={[0, 0.5, 14]} fov={35} />
+        <ambientLight intensity={0.4} /> 
+        <pointLight position={[5, 5, 5]} intensity={10} color="#ffcc00" />
+        <spotLight position={[0, 10, 0]} angle={0.3} penumbra={1} intensity={8} color="#ffcc00" />
         <Suspense fallback={<Loader />}>
-          <Float speed={1.2} rotationIntensity={0.05} floatIntensity={0.1}>
-            <Model scrollProgress={scrollProgress} />
+          <Float speed={1.5} rotationIntensity={0.1} floatIntensity={0.2}>
+            <Model progressValue={progress} />
           </Float>
         </Suspense>
       </Canvas>
-
       <div className="bg-text-layer">
-        <div className="title-container" style={{ opacity: 1 - scrollProgress * 1.5 }}>
+        <div className="title-container" style={{ opacity: 1 - progress * 1.5 }}>
           <h1 className="main-title">VEDAVERSE</h1>
           <p className="sub-title">SCROLL_TO_FACE_REALITY</p>
         </div>
       </div>
-
       <style jsx>{`
-        .canvas-wrapper {
-          height: 100vh;
-          width: 100%;
-          position: fixed;
-          top: 0;
-          left: 0;
-          z-index: 1;
-          background: #000; /* Dark Black for cinematic look */
-        }
-        .bg-text-layer {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          z-index: -1;
-          pointer-events: none;
-        }
-        .main-title {
-          font-size: clamp(4rem, 15vw, 12rem);
-          color: rgba(255, 204, 0, 0.03);
-          font-weight: 900;
-          letter-spacing: -5px;
-          margin: 0;
-        }
-        .sub-title {
-          font-size: 0.7rem;
-          color: #fff;
-          font-family: monospace;
-          background: rgba(255, 204, 0, 0.05);
-          border: 1px solid rgba(255, 204, 0, 0.2);
-          padding: 8px 25px;
-          text-align: center;
-          letter-spacing: 4px;
-        }
+        .canvas-wrapper { height: 100vh; width: 100%; position: fixed; top: 0; left: 0; z-index: 1; }
+        .pc-bg { background: radial-gradient(circle, #3d0000 0%, #000000 100%); }
+        .bg-text-layer { position: absolute; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; z-index: -1; }
+        .main-title { font-size: clamp(3rem, 15vw, 15rem); color: rgba(255, 204, 0, 0.05); font-weight: 900; letter-spacing: -5px; margin: 0; }
+        .sub-title { font-size: 0.7rem; color: #fff; font-family: monospace; background: rgba(255, 204, 0, 0.1); padding: 5px 15px; text-align: center; letter-spacing: 2px; }
       `}</style>
     </div>
   );
