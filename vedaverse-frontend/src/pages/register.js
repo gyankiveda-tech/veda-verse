@@ -29,8 +29,8 @@ export default function Register() {
     setSubmitting(true);
 
     try {
-      // ✅ FIX: Corrected the malformed URL. No double https or double slashes.
-      const res = await fetch('https://veda-verse-g71v.onrender.com/api/auth/register', {
+      // ✅ UPDATED: Using the new live Render URL provided
+      const res = await fetch('https://veda-verse-9hpl.onrender.com/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, password })
@@ -46,7 +46,8 @@ export default function Register() {
         alert(data.msg || "Registration Protocol Failed.");
       }
     } catch (error) {
-      alert("Nexus Connection Error: " + error.message);
+      // ✅ Handle case where server sends non-JSON error (Server Err... is not valid JSON)
+      alert("Nexus Connection Error: Server is initializing. Please try again in 30 seconds.");
     } finally {
       setSubmitting(false);
     }
