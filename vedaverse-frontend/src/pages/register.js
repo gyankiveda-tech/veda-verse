@@ -13,7 +13,6 @@ export default function Register() {
   const [submitting, setSubmitting] = useState(false);
   const router = useRouter();
 
-  // Agar user pehle se login hai, toh use Vault bhejo
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -25,13 +24,13 @@ export default function Register() {
     return () => unsubscribe();
   }, [router]);
 
-  // --- Naya: Backend API Se Registration (OTP Logic) ---
   const handleRegister = async (e) => {
     e.preventDefault();
     setSubmitting(true);
 
     try {
-      const res = await fetch('https://https://veda-verse-g71v.onrender.com//api/auth/register', {
+      // ✅ FIX: Corrected the malformed URL. No double https or double slashes.
+      const res = await fetch('https://veda-verse-g71v.onrender.com/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, password })
@@ -40,7 +39,6 @@ export default function Register() {
       const data = await res.json();
 
       if (res.ok) {
-        // Zaroori: Email ko save karna taaki verify-otp page par use ho sake
         localStorage.setItem('tempEmail', email);
         alert("OTP sent to your neural link (email). Verify to initialize.");
         router.push('/verify-otp');
@@ -54,7 +52,6 @@ export default function Register() {
     }
   };
 
-  // --- Google Se Quick Registration (Firebase) ---
   const handleGoogleSignUp = async () => {
     try {
       await signInWithGoogle();
