@@ -2,22 +2,18 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { auth, googleProvider } from '../lib/firebase'; 
-import { 
-  createUserWithEmailAndPassword, 
-  signInWithPopup, 
-  onAuthStateChanged,
-  updateProfile 
-} from 'firebase/auth';
+import { auth, signInWithGoogle } from '../lib/firebase'; 
+import { onAuthStateChanged } from 'firebase/auth';
 
 export default function Register() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
   const router = useRouter();
 
-  // Agar user pehle se login hai, toh use registration ki zaroorat nahi, seedha Vault bhejo
+  // Agar user pehle se login hai, toh use Vault bhejo
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -29,29 +25,44 @@ export default function Register() {
     return () => unsubscribe();
   }, [router]);
 
-  // --- Email & Password Se Registration ---
+  // --- Naya: Backend API Se Registration (OTP Logic) ---
   const handleRegister = async (e) => {
     e.preventDefault();
+    setSubmitting(true);
+
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      // User ka Display Name update karna
-      await updateProfile(userCredential.user, {
-        displayName: name
+      const res = await fetch('https://veda-verse-uw47.onrender.com/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password })
       });
-      alert("Commander Registered Successfully!");
-      router.push('/vault');
+
+      const data = await res.json();
+
+      if (res.ok) {
+        // Zaroori: Email ko save karna taaki verify-otp page par use ho sake
+        localStorage.setItem('tempEmail', email);
+        alert("OTP sent to your neural link (email). Verify to initialize.");
+        router.push('/verify-otp');
+      } else {
+        alert(data.msg || "Registration Protocol Failed.");
+      }
     } catch (error) {
-      alert("Registration Failed: " + error.message);
+      alert("Nexus Connection Error: " + error.message);
+    } finally {
+      setSubmitting(false);
     }
   };
 
-  // --- Google Se Quick Registration ---
+  // --- Google Se Quick Registration (Firebase) ---
   const handleGoogleSignUp = async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
+      await signInWithGoogle();
+      alert("Commander Identity Verified via Google!");
       router.push('/vault');
     } catch (error) {
-      alert("Google Sign-up Failed.");
+      console.error(error);
+      alert("Google Neural Link Failed.");
     }
   };
 
@@ -92,7 +103,9 @@ export default function Register() {
                 onChange={(e) => setPassword(e.target.value)} 
                 required 
               />
-              <button type="submit" className="portal-btn">INITIALIZE ACCOUNT</button>
+              <button type="submit" className="portal-btn" disabled={submitting}>
+                {submitting ? "INITIALIZING..." : "INITIALIZE ACCOUNT"}
+              </button>
             </form>
 
             <div style={{ margin: '20px 0', color: '#444', fontSize: '0.8rem' }}>— QUICK LINK —</div>
@@ -129,7 +142,8 @@ export default function Register() {
         
         .portal-input { width: 100%; background: #000; border: 1px solid #222; padding: 12px; color: var(--electric-gold); margin-bottom: 15px; outline: none; border-radius: 4px; }
         .portal-btn { width: 100%; background: var(--electric-gold); color: #000; border: none; padding: 12px; font-weight: bold; cursor: pointer; letter-spacing: 2px; border-radius: 4px; transition: 0.3s; }
-        .portal-btn:hover { box-shadow: 0 0 15px var(--electric-gold); }
+        .portal-btn:hover:not(:disabled) { box-shadow: 0 0 15px var(--electric-gold); }
+        .portal-btn:disabled { opacity: 0.5; cursor: not-allowed; }
         
         .social-btn { width: 50px; height: 50px; border-radius: 50%; border: 1px solid #333; background: transparent; color: white; cursor: pointer; font-size: 1.2rem; transition: 0.3s; }
         .social-btn:hover { border-color: var(--electric-gold); box-shadow: 0 0 10px var(--electric-gold); }
