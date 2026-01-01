@@ -31,7 +31,7 @@ export default function Register() {
     setSubmitting(true);
 
     try {
-      const res = await fetch('https://veda-verse-uw47.onrender.com/api/auth/register', {
+      const res = await fetch('https://https://veda-verse-g71v.onrender.com//api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, password })
