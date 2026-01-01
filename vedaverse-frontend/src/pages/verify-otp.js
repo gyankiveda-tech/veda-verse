@@ -25,8 +25,8 @@ export default function VerifyOTP() {
         setError('');
 
         try {
-            // ✅ FIX: Removed double slash from the URL
-            const res = await fetch('https://veda-verse-g71v.onrender.com/api/auth/verify-otp', {
+            // ✅ UPDATED: Using the new live Render URL
+            const res = await fetch('https://veda-verse-9hpl.onrender.com/api/auth/verify-otp', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, otp })
