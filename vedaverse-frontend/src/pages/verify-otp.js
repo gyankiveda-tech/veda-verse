@@ -25,7 +25,7 @@ export default function VerifyOTP() {
         setError('');
 
         try {
-            const res = await fetch('https://veda-verse-uw47.onrender.com/api/auth/verify-otp', {
+            const res = await fetch('https://https://veda-verse-g71v.onrender.com//api/auth/verify-otp', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, otp })
